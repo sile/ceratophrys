@@ -3,11 +3,11 @@ use std::collections::BTreeMap;
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
     size: Size,
-    pixels: Vec<Rgba>,
+    pixels: Vec<Color>,
 }
 
 impl Image {
-    pub fn new(size: Size, pixels: Vec<Rgba>) -> Option<Self> {
+    pub fn new(size: Size, pixels: Vec<Color>) -> Option<Self> {
         (size.area() == pixels.len() as u32).then(|| Self { size, pixels })
     }
 
@@ -15,28 +15,32 @@ impl Image {
         self.size
     }
 
-    pub fn pixels(&self) -> &[Rgba] {
+    pub fn pixels(&self) -> &[Color] {
         &self.pixels
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct Rgba {
+pub struct Color {
     pub r: u8,
     pub g: u8,
     pub b: u8,
     pub a: u8,
 }
 
-impl Rgba {
-    pub const fn new(r: u8, g: u8, b: u8, a: u8) -> Self {
+impl Color {
+    pub const fn rgba(r: u8, g: u8, b: u8, a: u8) -> Self {
         Self { r, g, b, a }
+    }
+
+    pub const fn rgb(r: u8, g: u8, b: u8) -> Self {
+        Self::rgba(r, g, b, 255)
     }
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Canvas {
-    pixels: BTreeMap<Point, Rgba>,
+    pixels: BTreeMap<Point, Color>,
 }
 
 impl Canvas {
@@ -44,7 +48,7 @@ impl Canvas {
         Self::default()
     }
 
-    pub fn pixels(&self) -> impl '_ + Iterator<Item = (Point, Rgba)> {
+    pub fn pixels(&self) -> impl '_ + Iterator<Item = (Point, Color)> {
         self.pixels.iter().map(|(&point, &rgba)| (point, rgba))
     }
 }
