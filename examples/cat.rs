@@ -9,16 +9,18 @@ fn main() -> orfail::Result<()> {
     let cat = TextImage::new(
         palette,
         concat!(
-            "  o   o         \n", //
-            " ooo ooo        \n", //
-            "ooooooooo  oo   \n", //
-            "oo ooo oo   oo  \n", //
-            "ooooooooo    oo \n", //
-            " ooooooo     oo \n", //
-            "ooooooooo    oo \n", //
-            "oooooooooo  oo  \n", //
-            "oooooooooooooo  \n", //
-            " oooo ooooo     \n", //
+            "                 \n", //
+            "   o   o         \n", //
+            "  ooo ooo        \n", //
+            " ooooooooo  oo   \n", //
+            " oo ooo oo   oo  \n", //
+            " ooooooooo    oo \n", //
+            "  ooooooo     oo \n", //
+            " ooooooooo    oo \n", //
+            " oooooooooo  oo  \n", //
+            " oooooooooooooo  \n", //
+            "  oooo ooooo     \n", //
+            "                 \n", //
         ),
     )
     .or_fail()?;
