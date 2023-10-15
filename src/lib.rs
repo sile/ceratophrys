@@ -30,7 +30,7 @@ impl Render for Image {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -49,6 +49,43 @@ impl Color {
 
     pub const fn to_rgba_bytes(self) -> [u8; 4] {
         [self.r, self.g, self.b, self.a]
+    }
+
+    pub fn alpha_blend(self, dst: Self) -> Self {
+        if dst.a == 0 {
+            return self;
+        }
+
+        fn blend(s: u32, d: u32, a: u32) -> u32 {
+            s + d - (d * a / (0xFF * 0xFF))
+        }
+
+        let a = blend(
+            u32::from(self.a) * 0xFF,
+            u32::from(dst.a) * 0xFF,
+            u32::from(self.a) * 0xFF,
+        );
+        let r = blend(
+            u32::from(self.r) * u32::from(self.a),
+            u32::from(dst.r) * u32::from(dst.a),
+            u32::from(self.a) * 0xFF,
+        );
+        let g = blend(
+            u32::from(self.g) * u32::from(self.a),
+            u32::from(dst.g) * u32::from(dst.a),
+            u32::from(self.a) * 0xFF,
+        );
+        let b = blend(
+            u32::from(self.b) * u32::from(self.a),
+            u32::from(dst.b) * u32::from(dst.a),
+            u32::from(self.a) * 0xFF,
+        );
+        Self {
+            r: (r * 0xFF * 0xFF / a / 0xFF) as u8,
+            g: (g * 0xFF * 0xFF / a / 0xFF) as u8,
+            b: (b * 0xFF * 0xFF / a / 0xFF) as u8,
+            a: (a / 0xFF) as u8,
+        }
     }
 }
 
@@ -108,6 +145,9 @@ impl TextPalette {
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Canvas {
     pixels: BTreeMap<Point, Color>,
+    start_point: Point,
+    end_point: Point,
+    background_color: Color,
 }
 
 impl Canvas {
@@ -120,7 +160,40 @@ impl Canvas {
     }
 
     pub fn set_pixel(&mut self, point: Point, color: Color) {
+        self.start_point.x = self.start_point.x.min(point.x);
+        self.start_point.y = self.start_point.y.min(point.y);
+
+        self.end_point.x = self.end_point.x.max(point.x + 1);
+        self.end_point.y = self.end_point.y.max(point.y + 1);
+
         self.pixels.insert(point, color);
+    }
+
+    pub fn start_point(&self) -> Point {
+        self.start_point
+    }
+
+    pub fn end_point(&self) -> Point {
+        self.end_point
+    }
+
+    pub fn size(&self) -> Size {
+        Size::new(
+            self.end_point.x.saturating_sub(self.start_point.x) as u16,
+            self.end_point.y.saturating_sub(self.start_point.y) as u16,
+        )
+    }
+
+    pub fn to_image(&self) -> Image {
+        let start_point = self.start_point();
+        let size = self.size();
+        let mut pixels = vec![self.background_color; size.area() as usize];
+        for (point, color) in self.pixels() {
+            let point = point - start_point;
+            let index = point.y as usize * size.width as usize + point.x as usize;
+            pixels[index] = color.alpha_blend(pixels[index]);
+        }
+        Image::new(size, pixels).expect("unreachable")
     }
 }
 
@@ -204,5 +277,22 @@ impl std::ops::Sub for Point {
 
     fn sub(self, Self { x, y }: Self) -> Self::Output {
         Self::new(self.x.saturating_sub(x), self.y.saturating_sub(y))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn alpha_blend_works() {
+        let black = Color::rgba(0, 0, 0, 255);
+        assert_eq!(black, black.alpha_blend(black));
+
+        let transparent = Color::rgba(0, 0, 0, 0);
+        assert_eq!(transparent, transparent.alpha_blend(transparent));
+
+        assert_eq!(black, transparent.alpha_blend(black));
+        assert_eq!(black, black.alpha_blend(transparent));
     }
 }
