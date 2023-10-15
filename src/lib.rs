@@ -38,6 +38,23 @@ impl Color {
     }
 }
 
+impl Render for Color {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        canvas.set_pixel(point, *self);
+    }
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
+pub struct Palette {
+    colors: BTreeMap<char, Color>,
+}
+
+impl Palette {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Canvas {
     pixels: BTreeMap<Point, Color>,
@@ -49,12 +66,16 @@ impl Canvas {
     }
 
     pub fn pixels(&self) -> impl '_ + Iterator<Item = (Point, Color)> {
-        self.pixels.iter().map(|(&point, &rgba)| (point, rgba))
+        self.pixels.iter().map(|(&point, &color)| (point, color))
+    }
+
+    pub fn set_pixel(&mut self, point: Point, color: Color) {
+        self.pixels.insert(point, color);
     }
 }
 
 pub trait Render {
-    fn render(&self, canvas: &mut Canvas);
+    fn render(&self, point: Point, canvas: &mut Canvas);
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
