@@ -1,5 +1,7 @@
 use std::collections::BTreeMap;
 
+pub mod bmp;
+
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
     size: Size,
@@ -43,6 +45,10 @@ impl Color {
 
     pub const fn rgb(r: u8, g: u8, b: u8) -> Self {
         Self::rgba(r, g, b, 255)
+    }
+
+    pub const fn to_rgba_bytes(self) -> [u8; 4] {
+        [self.r, self.g, self.b, self.a]
     }
 }
 
