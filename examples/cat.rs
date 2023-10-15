@@ -1,8 +1,8 @@
 use orfail::OrFail;
-use piac::{bmp::BmpImage, Color, Render, TextImage, TextPalette};
+use piac::{bmp::BmpImage, Color, Palette, Render, TextImage};
 
 fn main() -> orfail::Result<()> {
-    let palette = TextPalette::new()
+    let palette = Palette::new()
         .set_color(' ', Color::rgb(255, 255, 255))
         .set_color('o', Color::rgb(0, 0, 0))
         .clone();

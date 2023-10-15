@@ -97,12 +97,12 @@ impl Render for Color {
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct TextImage {
-    palette: TextPalette,
+    palette: Palette,
     text: String,
 }
 
 impl TextImage {
-    pub fn new(palette: TextPalette, text: impl Into<String>) -> Option<Self> {
+    pub fn new(palette: Palette, text: impl Into<String>) -> Option<Self> {
         let text = text.into();
         text.chars()
             .all(|ch| ch == '\n' || palette.get_color(ch).is_some())
@@ -123,11 +123,11 @@ impl Render for TextImage {
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
-pub struct TextPalette {
+pub struct Palette {
     colors: BTreeMap<char, Color>,
 }
 
-impl TextPalette {
+impl Palette {
     pub fn new() -> Self {
         Self::default()
     }
