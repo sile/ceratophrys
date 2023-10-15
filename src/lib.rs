@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 
 pub mod bmp;
+pub mod gif;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
