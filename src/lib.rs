@@ -20,6 +20,14 @@ impl Image {
     }
 }
 
+impl Render for Image {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        for (p, c) in self.size().points().zip(self.pixels.iter().copied()) {
+            canvas.set_pixel(point + p, c);
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Color {
     pub r: u8,
@@ -45,13 +53,49 @@ impl Render for Color {
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
-pub struct Palette {
+pub struct TextImage {
+    palette: TextPalette,
+    text: String,
+}
+
+impl TextImage {
+    pub fn new(palette: TextPalette, text: impl Into<String>) -> Option<Self> {
+        let text = text.into();
+        text.chars()
+            .all(|ch| palette.get_color(ch).is_some())
+            .then(|| Self { palette, text })
+    }
+}
+
+impl Render for TextImage {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        for (y, line) in self.text.lines().enumerate() {
+            for (x, ch) in line.chars().enumerate() {
+                let point = point.move_xy(x as i16, y as i16);
+                let color = self.palette.get_color(ch).expect("unreachable");
+                canvas.set_pixel(point, color);
+            }
+        }
+    }
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
+pub struct TextPalette {
     colors: BTreeMap<char, Color>,
 }
 
-impl Palette {
+impl TextPalette {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn set_color(&mut self, ch: char, color: Color) -> &mut Self {
+        self.colors.insert(ch, color);
+        self
+    }
+
+    pub fn get_color(&self, ch: char) -> Option<Color> {
+        self.colors.get(&ch).copied()
     }
 }
 
@@ -91,6 +135,11 @@ impl Size {
 
     pub fn area(self) -> u32 {
         u32::from(self.width) * u32::from(self.height)
+    }
+
+    pub fn points(self) -> impl Iterator<Item = Point> {
+        (0..self.height)
+            .flat_map(move |y| (0..self.width).map(move |x| Point::new(x as i16, y as i16)))
     }
 
     pub const fn is_empty(self) -> bool {
