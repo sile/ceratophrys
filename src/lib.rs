@@ -47,8 +47,8 @@ impl Color {
         Self::rgba(r, g, b, 255)
     }
 
-    pub const fn to_rgba_bytes(self) -> [u8; 4] {
-        [self.r, self.g, self.b, self.a]
+    pub const fn to_rgba(self) -> (u8, u8, u8, u8) {
+        (self.r, self.g, self.b, self.a)
     }
 
     pub fn alpha_blend(self, dst: Self) -> Self {
@@ -105,7 +105,7 @@ impl TextImage {
     pub fn new(palette: TextPalette, text: impl Into<String>) -> Option<Self> {
         let text = text.into();
         text.chars()
-            .all(|ch| palette.get_color(ch).is_some())
+            .all(|ch| ch == '\n' || palette.get_color(ch).is_some())
             .then(|| Self { palette, text })
     }
 }
@@ -199,6 +199,12 @@ impl Canvas {
 
 pub trait Render {
     fn render(&self, point: Point, canvas: &mut Canvas);
+
+    fn to_image(&self) -> Image {
+        let mut canvas = Canvas::new();
+        self.render(Point::ORIGIN, &mut canvas);
+        canvas.to_image()
+    }
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]

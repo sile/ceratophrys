@@ -37,7 +37,8 @@ impl<'a> BmpImage<'a> {
 
         // Image data.
         for pixel in self.image.pixels() {
-            writer.write_all(&pixel.to_rgba_bytes())?;
+            let (r, g, b, a) = pixel.to_rgba();
+            writer.write_all(&[b, g, r, a])?;
         }
         Ok(())
     }
