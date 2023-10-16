@@ -1,14 +1,16 @@
-use crate::Image;
+use crate::{Image, Render};
 use std::io::Write;
 
 #[derive(Debug)]
-pub struct BmpImage<'a> {
-    image: &'a Image,
+pub struct BmpImage {
+    image: Image,
 }
 
-impl<'a> BmpImage<'a> {
-    pub const fn new(image: &'a Image) -> Self {
-        Self { image }
+impl BmpImage {
+    pub fn new<T: Render>(image: &T) -> Self {
+        Self {
+            image: image.to_image(),
+        }
     }
 
     pub fn write_to<W: Write>(&self, mut writer: W) -> std::io::Result<()> {

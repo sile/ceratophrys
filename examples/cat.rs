@@ -1,5 +1,5 @@
 use orfail::OrFail;
-use piac::{bmp::BmpImage, Color, Palette, Render, TextImage};
+use piac::{bmp::BmpImage, Color, Palette, TextImage};
 
 fn main() -> orfail::Result<()> {
     let palette = Palette::new()
@@ -25,9 +25,7 @@ fn main() -> orfail::Result<()> {
     )
     .or_fail()?;
 
-    BmpImage::new(&cat.to_image())
-        .write_to(std::io::stdout())
-        .or_fail()?;
+    BmpImage::new(&cat).write_to(std::io::stdout()).or_fail()?;
 
     Ok(())
 }
