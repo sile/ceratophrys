@@ -49,7 +49,7 @@ fn main() -> orfail::Result<()> {
         .repeat()
         .frame(&cat0, delay)
         .frame(&cat1, delay)
-        .write(std::io::stdout())
+        .write_to(std::io::stdout())
         .or_fail()?;
 
     Ok(())

@@ -31,8 +31,7 @@ impl AnimatedGifImage {
         self
     }
 
-    // TOOD: rename
-    pub fn write<W: Write>(&self, writer: W) -> Result<(), gif::EncodingError> {
+    pub fn write_to<W: Write>(&self, writer: W) -> Result<(), gif::EncodingError> {
         let mut encoder = gif::Encoder::new(
             writer,
             self.size.width,

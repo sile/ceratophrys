@@ -26,7 +26,7 @@ fn main() -> orfail::Result<()> {
     .or_fail()?;
 
     BmpImage::new(&cat.to_image())
-        .write(std::io::stdout())
+        .write_to(std::io::stdout())
         .or_fail()?;
 
     Ok(())
