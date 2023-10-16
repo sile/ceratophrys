@@ -11,6 +11,7 @@ impl<'a> BmpImage<'a> {
         Self { image }
     }
 
+    // TODO: rename
     pub fn write<W: Write>(&self, mut writer: W) -> std::io::Result<()> {
         let image_data_offset: u32 = 54;
         let num_of_pixels = self.image.size().area();

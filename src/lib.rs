@@ -21,6 +21,10 @@ impl Image {
     pub fn pixels(&self) -> &[Color] {
         &self.pixels
     }
+
+    pub fn rows(&self) -> impl '_ + DoubleEndedIterator<Item = &[Color]> {
+        self.pixels.chunks(self.size.width as usize)
+    }
 }
 
 impl Render for Image {
@@ -31,7 +35,7 @@ impl Render for Image {
     }
 }
 
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
