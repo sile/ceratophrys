@@ -4,8 +4,10 @@ pub mod bmp;
 pub mod gif;
 
 mod color;
+mod render;
 
 pub use color::Color;
+pub use render::Render;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
@@ -138,16 +140,6 @@ impl Canvas {
             pixels[index] = color.alpha_blend(pixels[index]);
         }
         Image::new(size, pixels).expect("unreachable")
-    }
-}
-
-pub trait Render {
-    fn render(&self, point: Point, canvas: &mut Canvas);
-
-    fn to_image(&self) -> Image {
-        let mut canvas = Canvas::new();
-        self.render(Point::ORIGIN, &mut canvas);
-        canvas.to_image()
     }
 }
 
