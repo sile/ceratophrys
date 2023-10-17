@@ -1,14 +1,14 @@
-use std::collections::BTreeMap;
-
 pub mod bmp;
 pub mod gif;
 
 mod canvas;
 mod color;
+mod palette;
 mod render;
 
 pub use canvas::Canvas;
 pub use color::Color;
+pub use palette::Palette;
 pub use render::Render;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
@@ -67,26 +67,6 @@ impl Render for TextImage {
                 canvas.set_pixel(point, color);
             }
         }
-    }
-}
-
-#[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
-pub struct Palette {
-    colors: BTreeMap<char, Color>,
-}
-
-impl Palette {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    pub fn set_color(&mut self, ch: char, color: Color) -> &mut Self {
-        self.colors.insert(ch, color);
-        self
-    }
-
-    pub fn get_color(&self, ch: char) -> Option<Color> {
-        self.colors.get(&ch).copied()
     }
 }
 
