@@ -1,5 +1,5 @@
+use ceratophrys::{bmp::BmpImage, Color, Palette, TextImage};
 use orfail::OrFail;
-use piac::{bmp::BmpImage, Color, Palette, TextImage};
 
 fn main() -> orfail::Result<()> {
     let palette = Palette::new()

@@ -1,5 +1,5 @@
+use ceratophrys::{gif::AnimatedGifImage, Color, Palette, TextImage};
 use orfail::OrFail;
-use piac::{gif::AnimatedGifImage, Color, Palette, TextImage};
 use std::time::Duration;
 
 fn main() -> orfail::Result<()> {

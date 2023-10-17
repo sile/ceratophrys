@@ -1,5 +1,4 @@
 use std::collections::BTreeMap;
-
 pub mod bmp;
 pub mod gif;
 
