@@ -1,4 +1,4 @@
-use ceratophrys::{gif::AnimatedGifImage, Color, Palette, TextImage};
+use ceratophrys::{gif::AnimatedGifImage, Color, Palette, Render, TextImage};
 use orfail::OrFail;
 use std::time::Duration;
 
@@ -47,8 +47,8 @@ fn main() -> orfail::Result<()> {
     let delay = Duration::from_millis(200);
     AnimatedGifImage::new()
         .repeat()
-        .frame(&cat0, delay)
-        .frame(&cat1, delay)
+        .frame(cat0.to_image(), delay)
+        .frame(cat1.to_image(), delay)
         .write_to(std::io::stdout())
         .or_fail()?;
 

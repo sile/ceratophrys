@@ -1,4 +1,4 @@
-use ceratophrys::{bmp::BmpImage, Color, Palette, TextImage};
+use ceratophrys::{bmp::BmpImage, Color, Palette, Render, TextImage};
 use orfail::OrFail;
 
 fn main() -> orfail::Result<()> {
@@ -25,7 +25,9 @@ fn main() -> orfail::Result<()> {
     )
     .or_fail()?;
 
-    BmpImage::new(&cat).write_to(std::io::stdout()).or_fail()?;
+    BmpImage::new(cat.to_image())
+        .write_to(std::io::stdout())
+        .or_fail()?;
 
     Ok(())
 }

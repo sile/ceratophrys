@@ -1,4 +1,4 @@
-use crate::{Color, Image, Render, Size};
+use crate::{Color, Image, Size};
 use std::{collections::BTreeSet, io::Write, time::Duration};
 
 #[derive(Debug, Default)]
@@ -8,8 +8,7 @@ pub struct GifImage {
 }
 
 impl GifImage {
-    pub fn new<T: Render>(image: &T) -> Self {
-        let image = image.to_image();
+    pub fn new(image: Image) -> Self {
         let global_palette = BTreeSet::from_iter(image.pixels().iter().copied());
         Self {
             image,
@@ -65,15 +64,20 @@ impl AnimatedGifImage {
         self
     }
 
-    pub fn frame<T: Render>(&mut self, image: &T, delay: Duration) -> &mut Self {
-        let image = image.to_image();
-
+    pub fn frame(&mut self, image: Image, delay: Duration) -> &mut Self {
         self.size.width = self.size.width.max(image.size().width);
         self.size.height = self.size.height.max(image.size().height);
 
         self.global_palette.extend(image.pixels());
 
         self.frames.push(Frame { image, delay });
+        self
+    }
+
+    pub fn frames(&mut self, frames: impl Iterator<Item = (Image, Duration)>) -> &mut Self {
+        for (image, delay) in frames {
+            self.frame(image, delay);
+        }
         self
     }
 

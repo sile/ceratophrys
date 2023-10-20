@@ -1,4 +1,4 @@
-use crate::{Image, Render};
+use crate::Image;
 use std::io::Write;
 
 #[derive(Debug)]
@@ -7,10 +7,8 @@ pub struct BmpImage {
 }
 
 impl BmpImage {
-    pub fn new<T: Render>(image: &T) -> Self {
-        Self {
-            image: image.to_image(),
-        }
+    pub fn new(image: Image) -> Self {
+        Self { image }
     }
 
     pub fn write_to<W: Write>(&self, mut writer: W) -> std::io::Result<()> {
