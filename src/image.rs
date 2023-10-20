@@ -30,4 +30,8 @@ impl Render for Image {
             canvas.set_pixel(point + p, c);
         }
     }
+
+    fn to_image(&self) -> Image {
+        self.clone()
+    }
 }
