@@ -54,9 +54,9 @@ impl AnimatedGifImage {
                 self.size.height,
                 &frame
                     .image
-                    .rows()
-                    .rev()
-                    .flat_map(|row| row.iter().flat_map(|c| [c.r, c.g, c.b].into_iter()))
+                    .pixels()
+                    .iter()
+                    .flat_map(|c| [c.r, c.g, c.b].into_iter())
                     .collect::<Vec<_>>(),
             );
             frame.delay = delay;

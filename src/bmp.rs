@@ -38,7 +38,7 @@ impl BmpImage {
         writer.write_all(&[0, 0, 0, 0])?; // Important colors.
 
         // Image data.
-        for pixel in self.image.pixels() {
+        for pixel in self.image.rows().rev().flatten() {
             let (r, g, b, a) = pixel.to_rgba();
             writer.write_all(&[b, g, r, a])?;
         }
