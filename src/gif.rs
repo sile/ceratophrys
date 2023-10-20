@@ -28,9 +28,8 @@ impl GifImage {
                 .flat_map(|c| [c.r, c.g, c.b].into_iter())
                 .collect::<Vec<_>>(),
         )?;
-        encoder.set_repeat(gif::Repeat::Infinite)?;
 
-        let frame = gif::Frame::from_rgb(
+        let mut frame = gif::Frame::from_rgb(
             size.width,
             size.height,
             &self
@@ -40,6 +39,7 @@ impl GifImage {
                 .flat_map(|c| [c.r, c.g, c.b].into_iter())
                 .collect::<Vec<_>>(),
         );
+        frame.delay = 100;
         encoder.write_frame(&frame)?;
 
         Ok(())
