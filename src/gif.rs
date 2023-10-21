@@ -2,51 +2,6 @@ use crate::{Color, Image, Size};
 use std::{collections::BTreeSet, io::Write, time::Duration};
 
 #[derive(Debug, Default)]
-pub struct GifImage {
-    image: Image,
-    global_palette: BTreeSet<Color>,
-}
-
-impl GifImage {
-    pub fn new(image: Image) -> Self {
-        let global_palette = BTreeSet::from_iter(image.pixels().iter().copied());
-        Self {
-            image,
-            global_palette,
-        }
-    }
-
-    pub fn write_to<W: Write>(&self, writer: W) -> Result<(), gif::EncodingError> {
-        let size = self.image.size();
-        let mut encoder = gif::Encoder::new(
-            writer,
-            size.width,
-            size.height,
-            &self
-                .global_palette
-                .iter()
-                .flat_map(|c| [c.r, c.g, c.b].into_iter())
-                .collect::<Vec<_>>(),
-        )?;
-
-        let mut frame = gif::Frame::from_rgb(
-            size.width,
-            size.height,
-            &self
-                .image
-                .pixels()
-                .iter()
-                .flat_map(|c| [c.r, c.g, c.b].into_iter())
-                .collect::<Vec<_>>(),
-        );
-        frame.delay = 100;
-        encoder.write_frame(&frame)?;
-
-        Ok(())
-    }
-}
-
-#[derive(Debug, Default)]
 pub struct AnimatedGifImage {
     frames: Vec<Frame>,
     size: Size,
