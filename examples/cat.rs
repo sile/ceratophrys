@@ -3,9 +3,8 @@ use orfail::OrFail;
 
 fn main() -> orfail::Result<()> {
     let palette = Palette::new()
-        .set_color(' ', Color::rgb(255, 255, 255))
-        .set_color('o', Color::rgb(0, 0, 0))
-        .clone();
+        .color(' ', Color::rgb(255, 255, 255))
+        .color('o', Color::rgb(0, 0, 0));
     let cat = TextImage::new(
         palette,
         concat!(

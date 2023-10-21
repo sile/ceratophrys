@@ -11,7 +11,7 @@ impl Palette {
         Self::default()
     }
 
-    pub fn set_color(&mut self, ch: char, color: Color) -> &mut Self {
+    pub fn color(mut self, ch: char, color: Color) -> Self {
         self.colors.insert(ch, color);
         self
     }

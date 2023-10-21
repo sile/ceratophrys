@@ -17,6 +17,23 @@ impl Color {
         Self::rgba(r, g, b, 255)
     }
 
+    pub const fn rgba_hex(hex: u32) -> Self {
+        Self::rgba(
+            ((hex >> 24) & 0xFF) as u8,
+            ((hex >> 16) & 0xFF) as u8,
+            ((hex >> 8) & 0xFF) as u8,
+            (hex & 0xFF) as u8,
+        )
+    }
+
+    pub const fn rgb_hex(hex: u32) -> Self {
+        Self::rgb(
+            ((hex >> 16) & 0xFF) as u8,
+            ((hex >> 8) & 0xFF) as u8,
+            (hex & 0xFF) as u8,
+        )
+    }
+
     pub const fn to_rgba(self) -> (u8, u8, u8, u8) {
         (self.r, self.g, self.b, self.a)
     }
