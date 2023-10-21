@@ -11,6 +11,10 @@ impl Size {
         Self { width, height }
     }
 
+    pub const fn square(size: u16) -> Self {
+        Self::new(size, size)
+    }
+
     pub fn area(self) -> u32 {
         u32::from(self.width) * u32::from(self.height)
     }

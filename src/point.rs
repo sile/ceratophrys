@@ -20,12 +20,27 @@ impl Point {
         Self::new(self.x.saturating_add(x), self.y)
     }
 
+    pub const fn move_x_unsigned(self, x: u16) -> Self {
+        Self::new(self.x.saturating_add_unsigned(x), self.y)
+    }
+
     pub const fn move_y(self, y: i16) -> Self {
         Self::new(self.x, self.y.saturating_add(y))
     }
 
+    pub const fn move_y_unsigned(self, y: u16) -> Self {
+        Self::new(self.x, self.y.saturating_add_unsigned(y))
+    }
+
     pub const fn move_xy(self, x: i16, y: i16) -> Self {
         Self::new(self.x.saturating_add(x), self.y.saturating_add(y))
+    }
+
+    pub const fn move_xy_unsigned(self, x: u16, y: u16) -> Self {
+        Self::new(
+            self.x.saturating_add_unsigned(x),
+            self.y.saturating_add_unsigned(y),
+        )
     }
 }
 
