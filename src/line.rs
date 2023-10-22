@@ -7,7 +7,7 @@ pub struct Line {
 }
 
 impl Line {
-    pub const fn new(point: Point, color: Color) -> Self {
+    pub const fn new(color: Color, point: Point) -> Self {
         Self { point, color }
     }
 

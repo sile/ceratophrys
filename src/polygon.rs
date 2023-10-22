@@ -33,7 +33,7 @@ impl Polygon {
             .copied()
             .chain(std::iter::once(Point::ORIGIN));
         for (p0, p1) in start_points.zip(end_points) {
-            points.extend(Line::new(p1 - p0, self.color).points().map(|p| p + p0));
+            points.extend(Line::new(self.color, p1 - p0).points().map(|p| p + p0));
         }
         points.sort();
         points.dedup();

@@ -1,6 +1,6 @@
 use crate::{Canvas, Color, Point, Render, Size};
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub struct Rectangle {
     size: Size,
     color: Color,
@@ -8,22 +8,16 @@ pub struct Rectangle {
 }
 
 impl Rectangle {
-    pub fn new() -> Self {
-        Self::default()
+    pub fn new(color: Color, size: Size) -> Self {
+        Self {
+            color,
+            size,
+            fill: false,
+        }
     }
 
-    pub fn size(mut self, size: Size) -> Self {
-        self.size = size;
-        self
-    }
-
-    pub fn color(mut self, color: Color) -> Self {
-        self.color = color;
-        self
-    }
-
-    pub fn fill(mut self, fill: bool) -> Self {
-        self.fill = fill;
+    pub fn fill(mut self) -> Self {
+        self.fill = true;
         self
     }
 }
