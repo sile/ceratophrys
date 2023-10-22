@@ -7,20 +7,19 @@ pub struct TextImage {
 }
 
 impl TextImage {
-    pub fn new(palette: Palette, text: impl Into<String>) -> Option<Self> {
+    pub fn new(palette: Palette, text: impl Into<String>) -> Self {
         let text = text.into();
-        text.chars()
-            .all(|ch| ch == '\n' || palette.get_color(ch).is_some())
-            .then(|| Self { palette, text })
+        Self { palette, text }
     }
 }
 
 impl Render for TextImage {
     fn render(&self, point: Point, canvas: &mut Canvas) {
+        let default_color = self.palette.get_default_color();
         for (y, line) in self.text.lines().enumerate() {
             for (x, ch) in line.chars().enumerate() {
                 let point = point.move_xy(x as i16, y as i16);
-                let color = self.palette.get_color(ch).expect("unreachable");
+                let color = self.palette.get_color(ch).unwrap_or(default_color);
                 canvas.set_pixel(point, color);
             }
         }

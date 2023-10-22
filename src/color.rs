@@ -9,6 +9,8 @@ pub struct Color {
 }
 
 impl Color {
+    pub const TRANSPARENT: Self = Self::rgba(0, 0, 0, 0);
+
     pub const fn rgba(r: u8, g: u8, b: u8, a: u8) -> Self {
         Self { r, g, b, a }
     }
@@ -40,6 +42,10 @@ impl Color {
 
     pub fn alpha_blend(self, dst: Self) -> Self {
         if dst.a == 0 {
+            return self;
+        } else if self.a == 0 {
+            return dst;
+        } else if self.a == 0xFF {
             return self;
         }
 

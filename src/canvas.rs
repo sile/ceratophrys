@@ -18,6 +18,7 @@ impl Canvas {
         self.pixels.iter().map(|(&point, &color)| (point, color))
     }
 
+    // TODO: s/set/draw/
     pub fn set_pixel(&mut self, point: Point, color: Color) {
         self.start_point.x = self.start_point.x.min(point.x);
         self.start_point.y = self.start_point.y.min(point.y);
@@ -25,6 +26,10 @@ impl Canvas {
         self.end_point.x = self.end_point.x.max(point.x + 1);
         self.end_point.y = self.end_point.y.max(point.y + 1);
 
+        let color = self
+            .pixels
+            .get(&point)
+            .map_or(color, |&old_color| color.alpha_blend(old_color));
         self.pixels.insert(point, color);
     }
 

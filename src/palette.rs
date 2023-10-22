@@ -4,6 +4,7 @@ use std::collections::BTreeMap;
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Palette {
     colors: BTreeMap<char, Color>,
+    default_color: Color,
 }
 
 impl Palette {
@@ -18,5 +19,14 @@ impl Palette {
 
     pub fn get_color(&self, ch: char) -> Option<Color> {
         self.colors.get(&ch).copied()
+    }
+
+    pub fn default_color(mut self, color: Color) -> Self {
+        self.default_color = color;
+        self
+    }
+
+    pub fn get_default_color(&self) -> Color {
+        self.default_color
     }
 }

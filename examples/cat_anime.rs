@@ -22,8 +22,7 @@ fn main() -> orfail::Result<()> {
             "  oooo ooooo       \n", //
             "                   \n", //
         ),
-    )
-    .or_fail()?;
+    );
     let cat1 = TextImage::new(
         palette,
         concat!(
@@ -40,8 +39,7 @@ fn main() -> orfail::Result<()> {
             "  oooo ooooo       \n", //
             "                   \n", //
         ),
-    )
-    .or_fail()?;
+    );
 
     let delay = Duration::from_millis(200);
     AnimatedGifImage::new()
