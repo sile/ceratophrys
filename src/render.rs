@@ -16,6 +16,12 @@ impl Render for &dyn Render {
     }
 }
 
+impl Render for Box<dyn Render> {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        (**self).render(point, canvas);
+    }
+}
+
 impl<T: Render> Render for &T {
     fn render(&self, point: Point, canvas: &mut Canvas) {
         (*self).render(point, canvas);
