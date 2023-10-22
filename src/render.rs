@@ -9,3 +9,19 @@ pub trait Render {
         canvas.to_image()
     }
 }
+
+impl<T: Render> Render for Vec<T> {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        for item in self {
+            item.render(point, canvas);
+        }
+    }
+}
+
+impl<T: Render, const N: usize> Render for [T; N] {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        for item in self {
+            item.render(point, canvas);
+        }
+    }
+}
