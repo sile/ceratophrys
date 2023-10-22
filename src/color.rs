@@ -40,6 +40,10 @@ impl Color {
         (self.r, self.g, self.b, self.a)
     }
 
+    pub const fn is_transparent(self) -> bool {
+        self.a == 0
+    }
+
     pub fn alpha_blend(self, dst: Self) -> Self {
         if dst.a == 0 {
             return self;

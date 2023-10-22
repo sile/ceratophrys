@@ -1,7 +1,7 @@
 use crate::{Canvas, Image, Point};
 
 pub trait Render {
-    fn render(&self, point: Point, canvas: &mut Canvas);
+    fn render(&self, offset: Point, canvas: &mut Canvas);
 
     fn to_image(&self) -> Image {
         let mut canvas = Canvas::new();

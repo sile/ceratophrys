@@ -3,6 +3,7 @@ pub mod gif;
 
 mod canvas;
 mod color;
+mod filler;
 mod image;
 mod line;
 mod offset;
@@ -16,6 +17,7 @@ mod text_image;
 
 pub use canvas::Canvas;
 pub use color::Color;
+pub use filler::Filler;
 pub use image::Image;
 pub use line::Line;
 pub use offset::Offset;

@@ -15,12 +15,22 @@ impl Image {
         self.size
     }
 
-    pub fn pixels(&self) -> &[Color] {
+    pub fn colors(&self) -> &[Color] {
         &self.pixels
+    }
+
+    pub fn pixels(&self) -> impl '_ + Iterator<Item = (Point, Color)> {
+        self.size.points().zip(self.pixels.iter().copied())
     }
 
     pub fn rows(&self) -> impl '_ + DoubleEndedIterator<Item = &[Color]> {
         self.pixels.chunks(self.size.width as usize)
+    }
+
+    pub fn get_color(&self, point: Point) -> Option<Color> {
+        self.pixels
+            .get(self.size.width as usize * point.y as usize + point.x as usize)
+            .copied()
     }
 }
 

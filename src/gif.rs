@@ -23,7 +23,7 @@ impl AnimatedGifImage {
         self.size.width = self.size.width.max(image.size().width);
         self.size.height = self.size.height.max(image.size().height);
 
-        self.global_palette.extend(image.pixels());
+        self.global_palette.extend(image.colors());
 
         self.frames.push(Frame { image, delay });
         self
@@ -59,7 +59,7 @@ impl AnimatedGifImage {
                 self.size.height,
                 &frame
                     .image
-                    .pixels()
+                    .colors()
                     .iter()
                     .flat_map(|c| [c.r, c.g, c.b].into_iter())
                     .collect::<Vec<_>>(),
