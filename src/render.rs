@@ -10,6 +10,24 @@ pub trait Render {
     }
 }
 
+impl Render for &dyn Render {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        (*self).render(point, canvas);
+    }
+}
+
+impl<T: Render> Render for &T {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        (*self).render(point, canvas);
+    }
+}
+
+impl<T: Render> Render for Box<T> {
+    fn render(&self, point: Point, canvas: &mut Canvas) {
+        (**self).render(point, canvas);
+    }
+}
+
 impl<T: Render> Render for Vec<T> {
     fn render(&self, point: Point, canvas: &mut Canvas) {
         for item in self {
