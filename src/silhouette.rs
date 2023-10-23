@@ -1,4 +1,4 @@
-use crate::{Canvas, Point, Render};
+use crate::{Canvas, Color, Point, Render};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Silhouette<T> {
@@ -13,6 +13,9 @@ impl<T> Silhouette<T> {
 
 impl<T: Render> Render for Silhouette<T> {
     fn render(&self, offset: Point, canvas: &mut Canvas) {
-        todo!()
+        let image = self.image.to_image();
+        for (point, _color) in image.pixels() {
+            canvas.set_pixel(point + offset, Color::rgb_hex(0x000000));
+        }
     }
 }
