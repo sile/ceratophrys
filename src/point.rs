@@ -3,6 +3,7 @@ use std::{
     ops::{Add, Sub},
 };
 
+// TODO(?): s/Point/Position/
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Point {
     pub x: i16,

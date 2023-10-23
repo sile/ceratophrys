@@ -33,6 +33,8 @@ impl Canvas {
         self.pixels.insert(point, color);
     }
 
+    // TODO: set_pixel(), erase_pixel()
+
     pub fn set_background_color(&mut self, color: Color) {
         self.background_color = color;
     }
