@@ -44,7 +44,7 @@ impl Polygon {
 impl Render for Polygon {
     fn render(&self, point: Point, canvas: &mut Canvas) {
         for p in self.points() {
-            canvas.set_pixel(point + p, self.color);
+            canvas.draw_pixel(point + p, self.color);
         }
     }
 }

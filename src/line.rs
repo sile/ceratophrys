@@ -39,7 +39,7 @@ impl Line {
 impl Render for Line {
     fn render(&self, point: Point, canvas: &mut Canvas) {
         for p in self.points() {
-            canvas.set_pixel(point + p, self.color);
+            canvas.draw_pixel(point + p, self.color);
         }
     }
 }

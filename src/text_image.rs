@@ -20,7 +20,7 @@ impl Render for TextImage {
             for (x, ch) in line.chars().enumerate() {
                 let point = point.move_xy(x as i16, y as i16);
                 let color = self.palette.get_color(ch).unwrap_or(default_color);
-                canvas.set_pixel(point, color);
+                canvas.draw_pixel(point, color);
             }
         }
     }

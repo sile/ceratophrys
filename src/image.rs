@@ -37,7 +37,7 @@ impl Image {
 impl Render for Image {
     fn render(&self, point: Point, canvas: &mut Canvas) {
         for (p, c) in self.size().points().zip(self.pixels.iter().copied()) {
-            canvas.set_pixel(point + p, c);
+            canvas.draw_pixel(point + p, c);
         }
     }
 

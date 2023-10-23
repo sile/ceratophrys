@@ -88,7 +88,7 @@ impl Color {
 
 impl Render for Color {
     fn render(&self, point: Point, canvas: &mut Canvas) {
-        canvas.set_pixel(point, *self);
+        canvas.draw_pixel(point, *self);
     }
 }
 

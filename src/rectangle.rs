@@ -26,7 +26,7 @@ impl Render for Rectangle {
     fn render(&self, point: Point, canvas: &mut Canvas) {
         if self.fill {
             for p in self.size.points() {
-                canvas.set_pixel(point + p, self.color);
+                canvas.draw_pixel(point + p, self.color);
             }
         } else if !self.size.is_empty() {
             let mut pixels = Vec::new();
@@ -42,7 +42,7 @@ impl Render for Rectangle {
             pixels.dedup();
 
             for (point, color) in pixels {
-                canvas.set_pixel(point, color);
+                canvas.draw_pixel(point, color);
             }
         }
     }

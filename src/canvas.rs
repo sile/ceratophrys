@@ -18,8 +18,7 @@ impl Canvas {
         self.pixels.iter().map(|(&point, &color)| (point, color))
     }
 
-    // TODO: s/set/draw/
-    pub fn set_pixel(&mut self, point: Point, color: Color) {
+    pub fn draw_pixel(&mut self, point: Point, color: Color) {
         self.start_point.x = self.start_point.x.min(point.x);
         self.start_point.y = self.start_point.y.min(point.y);
 
@@ -33,7 +32,45 @@ impl Canvas {
         self.pixels.insert(point, color);
     }
 
-    // TODO: set_pixel(), erase_pixel()
+    pub fn set_pixel(&mut self, point: Point, color: Color) {
+        self.start_point.x = self.start_point.x.min(point.x);
+        self.start_point.y = self.start_point.y.min(point.y);
+
+        self.end_point.x = self.end_point.x.max(point.x + 1);
+        self.end_point.y = self.end_point.y.max(point.y + 1);
+
+        self.pixels.insert(point, color);
+    }
+
+    pub fn erase_pixel(&mut self, point: Point) {
+        if self.pixels.remove(&point).is_none() {
+            return;
+        }
+
+        if self.start_point.x == point.x {
+            self.start_point.x = self.pixels.keys().map(|p| p.x).min().unwrap_or_default();
+        }
+        if self.start_point.y == point.y {
+            self.start_point.y = self.pixels.keys().map(|p| p.y).min().unwrap_or_default();
+        }
+
+        if self.end_point.x == point.x + 1 {
+            self.end_point.x = self
+                .pixels
+                .keys()
+                .map(|p| p.x + 1)
+                .max()
+                .unwrap_or_default();
+        }
+        if self.end_point.y == point.y + 1 {
+            self.end_point.y = self
+                .pixels
+                .keys()
+                .map(|p| p.y + 1)
+                .max()
+                .unwrap_or_default();
+        }
+    }
 
     pub fn set_background_color(&mut self, color: Color) {
         self.background_color = color;

@@ -41,7 +41,7 @@ impl<T: Render> Render for Filler<T> {
         image.render(offset, canvas);
         for (point, color) in image.pixels() {
             if color.is_transparent() && !outer_points.contains(&point) {
-                canvas.set_pixel(point + offset, self.color);
+                canvas.draw_pixel(point + offset, self.color);
             }
         }
     }
