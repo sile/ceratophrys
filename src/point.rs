@@ -1,6 +1,6 @@
 use std::{
     cmp::Ordering,
-    ops::{Add, Sub},
+    ops::{Add, Mul, Sub},
 };
 
 // TODO(?): s/Point/Position/
@@ -70,5 +70,13 @@ impl Sub for Point {
 
     fn sub(self, Self { x, y }: Self) -> Self::Output {
         Self::new(self.x.saturating_sub(x), self.y.saturating_sub(y))
+    }
+}
+
+impl Mul<i16> for Point {
+    type Output = Self;
+
+    fn mul(self, rhs: i16) -> Self::Output {
+        Self::new(self.x.saturating_mul(rhs), self.y.saturating_mul(rhs))
     }
 }

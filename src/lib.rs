@@ -12,6 +12,7 @@ mod point;
 mod polygon;
 mod rectangle;
 mod render;
+mod scale;
 mod size;
 mod text_image;
 
@@ -26,5 +27,6 @@ pub use point::Point;
 pub use polygon::Polygon;
 pub use rectangle::Rectangle;
 pub use render::Render;
+pub use scale::Scale;
 pub use size::Size;
 pub use text_image::TextImage;
