@@ -51,6 +51,7 @@ impl<T: Render, const N: usize> Render for [T; N] {
     }
 }
 
+// TODO(?): s/RenderExt/Effect/
 pub trait RenderExt: Render {
     fn boxed(self) -> Box<dyn Render>
     where
