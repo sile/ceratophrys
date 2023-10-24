@@ -100,6 +100,6 @@ impl Canvas {
             let index = point.y as usize * size.width as usize + point.x as usize;
             pixels[index] = color.alpha_blend(pixels[index]);
         }
-        Image::new(size, pixels).expect("unreachable")
+        Image::new(size, pixels)
     }
 }

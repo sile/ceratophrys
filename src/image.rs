@@ -7,8 +7,9 @@ pub struct Image {
 }
 
 impl Image {
-    pub fn new(size: Size, pixels: Vec<Color>) -> Option<Self> {
-        (size.area() == pixels.len() as u32).then(|| Self { size, pixels })
+    pub fn new(size: Size, mut pixels: Vec<Color>) -> Self {
+        pixels.resize(size.area() as usize, Color::default());
+        Self { size, pixels }
     }
 
     pub fn size(&self) -> Size {
