@@ -1,5 +1,6 @@
-use crate::{Canvas, Image, Point};
+use crate::{Canvas, Image, Offset, Point};
 
+// TODO(?): s/Render/Object/
 pub trait Render {
     fn render(&self, offset: Point, canvas: &mut Canvas);
 
@@ -49,3 +50,21 @@ impl<T: Render, const N: usize> Render for [T; N] {
         }
     }
 }
+
+pub trait RenderExt: Render {
+    fn boxed(self) -> Box<dyn Render>
+    where
+        Self: Sized + 'static,
+    {
+        Box::new(self)
+    }
+
+    fn offset(self, offset: Point) -> Offset<Self>
+    where
+        Self: Sized,
+    {
+        Offset::new(offset, self)
+    }
+}
+
+impl<T: Render> RenderExt for T {}

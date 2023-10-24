@@ -27,7 +27,7 @@ pub use palette::Palette;
 pub use point::Point;
 pub use polygon::Polygon;
 pub use rectangle::Rectangle;
-pub use render::Render;
+pub use render::{Render, RenderExt};
 pub use scale::Scale;
 pub use silhouette::Silhouette;
 pub use size::Size;
