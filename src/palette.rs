@@ -17,6 +17,14 @@ impl Palette {
         self
     }
 
+    pub fn rgb_hex(self, ch: char, hex: u32) -> Self {
+        self.color(ch, Color::rgb_hex(hex))
+    }
+
+    pub fn rgba_hex(self, ch: char, hex: u32) -> Self {
+        self.color(ch, Color::rgba_hex(hex))
+    }
+
     pub fn get_color(&self, ch: char) -> Option<Color> {
         self.colors.get(&ch).copied()
     }
