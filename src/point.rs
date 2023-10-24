@@ -17,6 +17,14 @@ impl Point {
         Self { x, y }
     }
 
+    pub const fn xy(x: i16, y: i16) -> Self {
+        Self::new(x, y)
+    }
+
+    pub const fn yx(y: i16, x: i16) -> Self {
+        Self::new(x, y)
+    }
+
     pub const fn move_x(self, x: i16) -> Self {
         Self::new(self.x.saturating_add(x), self.y)
     }
