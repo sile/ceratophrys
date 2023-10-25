@@ -254,10 +254,10 @@ impl Color {
 impl Color {
     pub fn map_hsv<F>(self, f: F) -> Self
     where
-        F: FnOnce((f32, f32, f32)) -> (f32, f32, f32),
+        F: FnOnce(f32, f32, f32) -> (f32, f32, f32),
     {
         let mut hsv = HsvColor::from_color(self);
-        (hsv.h, hsv.s, hsv.v) = f((hsv.h, hsv.s, hsv.v));
+        (hsv.h, hsv.s, hsv.v) = f(hsv.h, hsv.s, hsv.v);
         hsv.to_color()
     }
 }
