@@ -247,7 +247,117 @@ impl Color {
     pub const YELLOWGREEN: Self = Self::rgb_hex(0x9acd32);
 
     // CSS Level 4
+    /// rebeccapurple: <span style="background-color: rebeccapurple; color: white">&nbsp;#663399&nbsp;</span>
     pub const REBECCAPURPLE: Self = Self::rgb_hex(0x663399);
+}
+
+impl Color {
+    pub fn map_hsv<F>(self, f: F) -> Self
+    where
+        F: FnOnce((f32, f32, f32)) -> (f32, f32, f32),
+    {
+        let mut hsv = HsvColor::from_color(self);
+        (hsv.h, hsv.s, hsv.v) = f((hsv.h, hsv.s, hsv.v));
+        hsv.to_color()
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+struct HsvColor {
+    h: f32,
+    s: f32,
+    v: f32,
+    a: u8,
+}
+
+impl HsvColor {
+    fn from_color(c: Color) -> Self {
+        let r = c.r as f32 / 255.0;
+        let g = c.g as f32 / 255.0;
+        let b = c.b as f32 / 255.0;
+        let max = r.max(g).max(b);
+        let min = r.min(g).min(b);
+        let n = max - min;
+
+        let s = if max == 0.0 { 0.0 } else { n / max };
+        let v = max;
+        let h = if n == 0.0 {
+            0.0
+        } else if max == r {
+            if g < b {
+                6.0 + g / n - b / n
+            } else {
+                (g - b) / n
+            }
+        } else if max == g {
+            2.0 + b / n - r / n
+        } else {
+            4.0 + r / n - g / n
+        } / 6.0;
+
+        Self {
+            h: h * 360.0,
+            s: s * 100.0,
+            v: v * 100.0,
+            a: c.a,
+        }
+    }
+
+    fn to_color(mut self) -> Color {
+        self.h = (self.h / 360.0) % 1.0;
+        if self.h < 0.0 {
+            self.h += 1.0;
+        }
+        self.s = (self.s / 100.0).clamp(0.0, 1.0);
+        self.v = (self.v / 100.0).clamp(0.0, 1.0);
+
+        if self.s == 0.0 {
+            let v = (self.v * 255.0).round() as u8;
+            return Color::rgba(v, v, v, self.a);
+        }
+
+        let mut r = self.v;
+        let mut g = self.v;
+        let mut b = self.v;
+        let s = self.s;
+        let h6 = self.h * 6.0;
+
+        let f = h6.fract();
+        match h6.floor() as usize {
+            1 => {
+                r *= 1.0 - s * f;
+                b *= 1.0 - s;
+            }
+            2 => {
+                r *= 1.0 - s;
+                b *= 1.0 - s * (1.0 - f);
+            }
+            3 => {
+                r *= 1.0 - s;
+                g *= 1.0 - s * f;
+            }
+            4 => {
+                r *= 1.0 - s * (1.0 - f);
+                g *= 1.0 - s;
+            }
+            5 => {
+                g *= 1.0 - s;
+                b *= 1.0 - s * f;
+            }
+            n => {
+                debug_assert!(n == 0 || n == 6, "n: {n}");
+                g *= 1.0 - s * (1.0 - f);
+                b *= 1.0 - s;
+            }
+        }
+
+        Color::rgba(
+            (r * 255.0).round() as u8,
+            (g * 255.0).round() as u8,
+            (b * 255.0).round() as u8,
+            self.a,
+        )
+    }
 }
 
 #[cfg(test)]
