@@ -65,6 +65,7 @@ impl AnimatedGifImage {
                     .collect::<Vec<_>>(),
             );
             frame.delay = delay;
+            frame.palette = None;
             encoder.write_frame(&frame)?;
         }
 
