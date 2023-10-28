@@ -3,6 +3,7 @@ pub mod gif;
 
 mod canvas;
 mod color;
+mod entity;
 mod filler;
 mod image;
 mod line;
@@ -19,6 +20,7 @@ mod text_image;
 
 pub use canvas::Canvas;
 pub use color::Color;
+pub use entity::Entity;
 pub use filler::Filler;
 pub use image::Image;
 pub use line::Line;
@@ -32,3 +34,9 @@ pub use scale::Scale;
 pub use silhouette::Silhouette;
 pub use size::Size;
 pub use text_image::TextImage;
+
+pub trait Filter {
+    fn filter(&self, entity: Entity) -> Entity;
+}
+
+pub type Position = Point;

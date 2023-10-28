@@ -1,6 +1,5 @@
-use crate::{Canvas, Image, Offset, Point};
+use crate::{Canvas, Entity, Image, Offset, Point};
 
-// TODO(?): s/Render/Object/
 pub trait Render {
     fn render(&self, offset: Point, canvas: &mut Canvas);
 
@@ -8,6 +7,10 @@ pub trait Render {
         let mut canvas = Canvas::new();
         self.render(Point::ORIGIN, &mut canvas);
         canvas.to_image()
+    }
+
+    fn to_entity(&self) -> Entity {
+        Entity::new().image(self.to_image())
     }
 }
 
