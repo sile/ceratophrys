@@ -6,7 +6,7 @@ pub struct Canvas {
     pixels: BTreeMap<Point, Color>,
     start_point: Point,
     end_point: Point,
-    background_color: Color,
+    background_color: Color, // TODO: delete
 }
 
 impl Canvas {

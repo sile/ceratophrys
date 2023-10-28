@@ -1,5 +1,7 @@
 pub mod bmp;
+pub mod filters;
 pub mod gif;
+// TODO: text
 
 mod canvas;
 mod color;
