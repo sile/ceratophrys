@@ -31,8 +31,8 @@ impl Entity {
         }
     }
 
-    pub fn child(mut self, child: Entity) -> Self {
-        self.children.push(child);
+    pub fn child(mut self, child: impl Into<Entity>) -> Self {
+        self.children.push(child.into());
         self
     }
 }
