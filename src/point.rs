@@ -12,6 +12,8 @@ pub struct Point {
 
 impl Point {
     pub const ORIGIN: Self = Self::new(0, 0);
+    pub const MIN: Self = Self::new(i16::MIN, i16::MIN);
+    pub const MAX: Self = Self::new(i16::MAX, i16::MAX);
 
     pub const fn new(x: i16, y: i16) -> Self {
         Self { x, y }
@@ -50,6 +52,14 @@ impl Point {
             self.x.saturating_add_unsigned(x),
             self.y.saturating_add_unsigned(y),
         )
+    }
+
+    pub fn min(self, other: Self) -> Self {
+        Self::new(self.x.min(other.x), self.y.min(other.y))
+    }
+
+    pub fn max(self, other: Self) -> Self {
+        Self::new(self.x.max(other.x), self.y.max(other.y))
     }
 }
 
