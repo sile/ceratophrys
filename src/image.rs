@@ -34,7 +34,7 @@ impl Image {
 
     pub fn to_text(&self) -> (Palette, String) {
         let mut palette = Palette::new();
-        let mut colors = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars();
+        let mut colors = " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars();
         let mut color_to_char = BTreeMap::new();
         let mut text = String::new();
 
