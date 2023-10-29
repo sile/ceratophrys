@@ -25,8 +25,8 @@ impl Palette {
         self.color(ch, Color::rgba_hex(hex))
     }
 
-    pub fn get_color(&self, ch: char) -> Option<Color> {
-        self.colors.get(&ch).copied()
+    pub fn get_color(&self, ch: char) -> Color {
+        self.colors.get(&ch).copied().unwrap_or(self.default_color)
     }
 
     pub fn default_color(mut self, color: Color) -> Self {

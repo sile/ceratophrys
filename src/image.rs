@@ -1,4 +1,4 @@
-use crate::{Color, Pixel, Point, Size};
+use crate::{Color, Palette, Pixel, Point, Size};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
@@ -12,7 +12,25 @@ impl Image {
         Self { size, pixels }
     }
 
-    // TODO: from_text(), to_text()
+    pub fn from_text(palette: Palette, text: &str) -> Self {
+        let mut size = Size::EMPTY;
+        for line in text.lines() {
+            size.height += 1;
+            size.width = size.width.max(line.chars().count() as u16);
+        }
+
+        let mut colors = vec![Color::TRANSPARENT; size.area() as usize];
+        for (y, line) in text.lines().enumerate() {
+            for (x, ch) in line.chars().enumerate() {
+                let i = size.width as usize * y + x;
+                colors[i] = palette.get_color(ch);
+            }
+        }
+
+        Self::new(size, colors)
+    }
+
+    // TODO:  to_text()
 
     pub fn size(&self) -> Size {
         self.size

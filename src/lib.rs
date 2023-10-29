@@ -17,7 +17,6 @@ mod point;
 mod polygon;
 mod silhouette;
 mod size;
-mod text_image;
 
 pub use canvas::Canvas;
 pub use color::Color;
@@ -32,7 +31,6 @@ pub use point::Point;
 pub use polygon::Polygon;
 pub use silhouette::Silhouette;
 pub use size::Size;
-pub use text_image::TextImage;
 
 pub type Position = Point;
 
