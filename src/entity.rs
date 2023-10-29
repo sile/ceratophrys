@@ -20,6 +20,13 @@ impl Entity {
         }
     }
 
+    pub fn image_pixels(self, pixels: impl IntoIterator<Item = Pixel>) -> Self {
+        Self {
+            image: Image::from_iter(pixels),
+            ..self
+        }
+    }
+
     pub fn offset(self, offset: Position) -> Self {
         Self { offset, ..self }
     }
@@ -31,8 +38,8 @@ impl Entity {
         }
     }
 
-    pub fn child(mut self, child: impl Into<Entity>) -> Self {
-        self.children.push(child.into());
+    pub fn child(mut self, child: Entity) -> Self {
+        self.children.push(child);
         self
     }
 

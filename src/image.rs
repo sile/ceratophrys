@@ -1,6 +1,5 @@
+use crate::{Color, Pixel, Point, Size};
 use std::collections::BTreeMap;
-
-use crate::{Color, Palette, Pixel, Point, Size};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
@@ -14,26 +13,26 @@ impl Image {
         Self { size, pixels }
     }
 
-    pub fn from_text(palette: Palette, text: &str) -> Self {
+    pub fn from_text(palette: impl IntoIterator<Item = (char, Color)>, text: &str) -> Self {
         let mut size = Size::EMPTY;
         for line in text.lines() {
             size.height += 1;
             size.width = size.width.max(line.chars().count() as u16);
         }
 
+        let palette = BTreeMap::from_iter(palette);
         let mut colors = vec![Color::TRANSPARENT; size.area() as usize];
         for (y, line) in text.lines().enumerate() {
             for (x, ch) in line.chars().enumerate() {
                 let i = size.width as usize * y + x;
-                colors[i] = palette.get_color(ch);
+                colors[i] = palette.get(&ch).copied().unwrap_or(Color::TRANSPARENT);
             }
         }
 
         Self::new(size, colors)
     }
 
-    pub fn to_text(&self) -> (Palette, String) {
-        let mut palette = Palette::new();
+    pub fn to_text(&self) -> String {
         let mut colors = " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars();
         let mut color_to_char = BTreeMap::new();
         let mut text = String::new();
@@ -48,12 +47,7 @@ impl Image {
             }
         }
 
-        for (color, ch) in color_to_char {
-            palette = palette.color(ch, color);
-        }
-        palette = palette.color('?', Color::TRANSPARENT);
-
-        (palette, text)
+        text
     }
 
     pub fn size(&self) -> Size {
