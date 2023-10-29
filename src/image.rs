@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 use crate::{Color, Palette, Pixel, Point, Size};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
@@ -30,7 +32,29 @@ impl Image {
         Self::new(size, colors)
     }
 
-    // TODO:  to_text()
+    pub fn to_text(&self) -> (Palette, String) {
+        let mut palette = Palette::new();
+        let mut colors = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars();
+        let mut color_to_char = BTreeMap::new();
+        let mut text = String::new();
+
+        for (i, pixel) in self.pixels().enumerate() {
+            let ch = color_to_char
+                .entry(pixel.color)
+                .or_insert_with(|| colors.next().unwrap_or('?'));
+            text.push(*ch);
+            if (i + 1) % self.size.width as usize == 0 {
+                text.push('\n');
+            }
+        }
+
+        for (color, ch) in color_to_char {
+            palette = palette.color(ch, color);
+        }
+        palette = palette.color('?', Color::TRANSPARENT);
+
+        (palette, text)
+    }
 
     pub fn size(&self) -> Size {
         self.size
