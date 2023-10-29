@@ -11,7 +11,6 @@ mod filter;
 mod image;
 mod offset;
 mod point;
-//mod polygon;
 mod silhouette;
 mod size;
 
@@ -22,7 +21,6 @@ pub use filter::Filter;
 pub use image::Image;
 pub use offset::Offset;
 pub use point::Point;
-//pub use polygon::Polygon;
 pub use silhouette::Silhouette;
 pub use size::Size;
 
