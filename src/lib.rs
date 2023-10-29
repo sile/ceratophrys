@@ -6,7 +6,6 @@ pub mod shapes;
 
 mod color;
 mod entity;
-mod filler;
 mod filter;
 mod image;
 mod offset;
@@ -16,7 +15,6 @@ mod size;
 
 pub use color::Color;
 pub use entity::Entity;
-pub use filler::Filler;
 pub use filter::Filter;
 pub use image::Image;
 pub use offset::Offset;

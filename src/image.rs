@@ -58,8 +58,11 @@ impl Image {
         &self.pixels
     }
 
+    pub fn colors_mut(&mut self) -> &mut [Color] {
+        &mut self.pixels
+    }
+
     pub fn pixels(&self) -> impl '_ + Iterator<Item = Pixel> {
-        // TODO: Remove transparent
         self.size
             .points()
             .zip(self.pixels.iter().copied())
@@ -69,6 +72,13 @@ impl Image {
     pub fn rows(&self) -> impl '_ + DoubleEndedIterator<Item = &[Color]> {
         self.pixels.chunks(self.size.width as usize)
     }
+
+    // pub fn set_pixel(&mut self, pixel: Pixel) {
+    //     let i = self.size.width as usize * pixel.position.y as usize + pixel.position.x as usize;
+    //     if let Some(c) = self.pixels.get_mut(i) {
+    //         *c = pixel.color;
+    //     }
+    // }
 
     pub fn get_color(&self, point: Point) -> Option<Color> {
         self.pixels
