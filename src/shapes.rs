@@ -1,4 +1,4 @@
-use crate::{Color, Image, Point, Size};
+use crate::{Color, Pixel, Point, Size};
 
 // TODO: Point
 
@@ -35,6 +35,30 @@ impl Rectangle {
     pub const fn fill(self) -> Self {
         Self { fill: true, ..self }
     }
+
+    pub fn pixels(self) -> Box<dyn Iterator<Item = Pixel>> {
+        if self.fill || self.size.is_empty() {
+            return Box::new(
+                self.size
+                    .points()
+                    .map(move |p| Pixel::new(self.position + p, self.color)),
+            );
+        }
+
+        let pixel = Pixel::new(self.position, self.color);
+        let mut pixels = Vec::new();
+        for x in 0..self.size.width {
+            pixels.push(pixel.map_position(|p| p.move_x_unsigned(x)));
+            pixels.push(pixel.map_position(|p| p.move_xy_unsigned(x, self.size.height - 1)));
+        }
+        for y in 0..self.size.height {
+            pixels.push(pixel.map_position(|p| p.move_y_unsigned(y)));
+            pixels.push(pixel.map_position(|p| p.move_xy_unsigned(self.size.width - 1, y)));
+        }
+        pixels.sort();
+        pixels.dedup();
+        Box::new(pixels.into_iter())
+    }
 }
 
 impl Default for Rectangle {
@@ -43,16 +67,11 @@ impl Default for Rectangle {
     }
 }
 
-impl From<Rectangle> for Image {
-    fn from(shape: Rectangle) -> Self {
-        let pixels = Vec::new();
-        // if shape.fill {
-        //     pixels=shape.size.points().map(|p| shape.color).collect();
-        //     for p in self.size.points() {
-        //         canvas.draw_pixel(point + p, self.color);
-        //     }
-        // } else {
-        // }
-        Image::new(shape.size, pixels)
+impl IntoIterator for Rectangle {
+    type Item = Pixel;
+    type IntoIter = Box<dyn Iterator<Item = Pixel>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.pixels()
     }
 }

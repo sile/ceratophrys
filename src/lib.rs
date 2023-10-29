@@ -15,7 +15,6 @@ mod offset;
 mod palette;
 mod point;
 mod polygon;
-mod rectangle;
 mod silhouette;
 mod size;
 mod text_image;
@@ -31,9 +30,28 @@ pub use offset::Offset;
 pub use palette::Palette;
 pub use point::Point;
 pub use polygon::Polygon;
-pub use rectangle::Rectangle;
 pub use silhouette::Silhouette;
 pub use size::Size;
 pub use text_image::TextImage;
 
 pub type Position = Point;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Pixel {
+    pub position: Point,
+    pub color: Color,
+}
+
+impl Pixel {
+    pub const fn new(position: Point, color: Color) -> Self {
+        Self { position, color }
+    }
+
+    pub fn map_position<F>(mut self, f: F) -> Self
+    where
+        F: FnOnce(Point) -> Point,
+    {
+        self.position = f(self.position);
+        self
+    }
+}
