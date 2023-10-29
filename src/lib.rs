@@ -9,10 +9,9 @@ mod entity;
 mod filler;
 mod filter;
 mod image;
-mod line;
 mod offset;
 mod point;
-mod polygon;
+//mod polygon;
 mod silhouette;
 mod size;
 
@@ -21,10 +20,9 @@ pub use entity::Entity;
 pub use filler::Filler;
 pub use filter::Filter;
 pub use image::Image;
-pub use line::Line;
 pub use offset::Offset;
 pub use point::Point;
-pub use polygon::Polygon;
+//pub use polygon::Polygon;
 pub use silhouette::Silhouette;
 pub use size::Size;
 

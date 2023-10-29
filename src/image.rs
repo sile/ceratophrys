@@ -59,6 +59,7 @@ impl Image {
     }
 
     pub fn pixels(&self) -> impl '_ + Iterator<Item = Pixel> {
+        // TODO: Remove transparent
         self.size
             .points()
             .zip(self.pixels.iter().copied())
