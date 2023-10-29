@@ -4,19 +4,19 @@ pub mod gif;
 pub mod shapes;
 // TODO: text
 
+mod animation;
 mod color;
 mod entity;
 mod filter;
-mod frame;
 mod image;
 mod point;
 mod silhouette;
 mod size;
 
+pub use animation::Animation;
 pub use color::Color;
 pub use entity::Entity;
 pub use filter::Filter;
-pub use frame::Frame;
 pub use image::Image;
 pub use point::Point;
 pub use silhouette::Silhouette;
