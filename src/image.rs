@@ -22,8 +22,11 @@ impl Image {
         &self.pixels
     }
 
-    pub fn pixels(&self) -> impl '_ + Iterator<Item = (Point, Color)> {
-        self.size.points().zip(self.pixels.iter().copied())
+    pub fn pixels(&self) -> impl '_ + Iterator<Item = Pixel> {
+        self.size
+            .points()
+            .zip(self.pixels.iter().copied())
+            .map(|(position, color)| Pixel::new(position, color))
     }
 
     pub fn rows(&self) -> impl '_ + DoubleEndedIterator<Item = &[Color]> {

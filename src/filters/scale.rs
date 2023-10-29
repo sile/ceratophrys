@@ -15,11 +15,11 @@ impl Filter<Image> for Scale {
     fn filter(&self, target: Image) -> Image {
         let scale = i16::from(self.0.get());
         let mut canvas = Canvas::new();
-        for (point, color) in target.pixels() {
-            let point = point * scale;
+        for pixel in target.pixels() {
+            let position = pixel.position * scale;
             for y in 0..scale {
                 for x in 0..scale {
-                    canvas.set_pixel(point.move_xy(x, y), color);
+                    canvas.set_pixel(position.move_xy(x, y), pixel.color);
                 }
             }
         }

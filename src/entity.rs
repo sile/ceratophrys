@@ -1,4 +1,4 @@
-use crate::{Image, Position};
+use crate::{Image, Pixel, Position};
 
 #[derive(Debug, Default, Clone)]
 pub struct Entity {
@@ -35,6 +35,16 @@ impl Entity {
         self.children.push(child.into());
         self
     }
-}
 
-// TODO: Into<Image>
+    pub fn pixels(&self) -> impl '_ + Iterator<Item = Pixel> {
+        let pixels = self.image.pixels();
+        let children_pixels = self.children.iter().flat_map(|child| child.pixels());
+        pixels
+            .chain(Box::new(children_pixels) as Box<dyn Iterator<Item = Pixel>>)
+            .map(|pixel| pixel.map_position(|p| p + self.offset))
+    }
+
+    pub fn to_image(&self) -> Image {
+        Image::from_iter(self.pixels())
+    }
+}
