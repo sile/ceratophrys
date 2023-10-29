@@ -2,20 +2,24 @@ use crate::{Color, Pixel, Point, Size};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Rectangle {
+    pub color: Color,
     pub position: Point,
     pub size: Size,
-    pub color: Color,
     pub fill: bool,
 }
 
 impl Rectangle {
     pub const fn new() -> Self {
         Self {
+            color: Color::BLACK,
             position: Point::ORIGIN,
             size: Size::EMPTY,
-            color: Color::BLACK,
             fill: false,
         }
+    }
+
+    pub const fn color(self, color: Color) -> Self {
+        Self { color, ..self }
     }
 
     pub const fn position(self, position: Point) -> Self {
@@ -24,10 +28,6 @@ impl Rectangle {
 
     pub const fn size(self, size: Size) -> Self {
         Self { size, ..self }
-    }
-
-    pub const fn color(self, color: Color) -> Self {
-        Self { color, ..self }
     }
 
     pub const fn fill(self) -> Self {
