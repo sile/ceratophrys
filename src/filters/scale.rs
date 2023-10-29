@@ -1,6 +1,5 @@
+use crate::{Entity, Filter, Image, Pixel, Size};
 use std::num::NonZeroU8;
-
-use crate::{Canvas, Entity, Filter, Image};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Scale(NonZeroU8);
@@ -13,17 +12,15 @@ impl Scale {
 
 impl Filter<Image> for Scale {
     fn filter(&self, target: Image) -> Image {
-        let scale = i16::from(self.0.get());
-        let mut canvas = Canvas::new();
-        for pixel in target.pixels() {
-            let position = pixel.position * scale;
-            for y in 0..scale {
-                for x in 0..scale {
-                    canvas.set_pixel(position.move_xy(x, y), pixel.color);
-                }
-            }
-        }
-        canvas.to_image()
+        let scale = self.0.get();
+        target
+            .pixels()
+            .flat_map(|Pixel { position, color }| {
+                Size::square(u16::from(scale))
+                    .points()
+                    .map(move |offset| Pixel::new(position * i16::from(scale) + offset, color))
+            })
+            .collect()
     }
 }
 

@@ -4,7 +4,6 @@ pub mod gif;
 pub mod shapes;
 // TODO: text
 
-mod canvas;
 mod color;
 mod entity;
 mod filler;
@@ -17,7 +16,6 @@ mod polygon;
 mod silhouette;
 mod size;
 
-pub use canvas::Canvas;
 pub use color::Color;
 pub use entity::Entity;
 pub use filler::Filler;
