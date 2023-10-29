@@ -1,4 +1,4 @@
-use crate::{Canvas, Color, Point, Render, Size};
+use crate::{Color, Point, Size};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
@@ -34,17 +34,5 @@ impl Image {
         self.pixels
             .get(self.size.width as usize * point.y as usize + point.x as usize)
             .copied()
-    }
-}
-
-impl Render for Image {
-    fn render(&self, point: Point, canvas: &mut Canvas) {
-        for (p, c) in self.size().points().zip(self.pixels.iter().copied()) {
-            canvas.draw_pixel(point + p, c);
-        }
-    }
-
-    fn to_image(&self) -> Image {
-        self.clone()
     }
 }

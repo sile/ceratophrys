@@ -1,5 +1,3 @@
-use crate::{Canvas, Point, Render};
-
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Color {
     pub r: u8,
@@ -81,12 +79,6 @@ impl Color {
             b: (b * 0xFF * 0xFF / a / 0xFF) as u8,
             a: (a / 0xFF) as u8,
         }
-    }
-}
-
-impl Render for Color {
-    fn render(&self, point: Point, canvas: &mut Canvas) {
-        canvas.draw_pixel(point, *self);
     }
 }
 

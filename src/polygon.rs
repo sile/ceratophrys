@@ -1,4 +1,4 @@
-use crate::{Canvas, Color, Line, Point, Render};
+use crate::{Color, Line, Point};
 
 #[derive(Debug, Clone)]
 pub struct Polygon {
@@ -41,10 +41,10 @@ impl Polygon {
     }
 }
 
-impl Render for Polygon {
-    fn render(&self, point: Point, canvas: &mut Canvas) {
-        for p in self.points() {
-            canvas.draw_pixel(point + p, self.color);
-        }
-    }
-}
+// impl Render for Polygon {
+//     fn render(&self, point: Point, canvas: &mut Canvas) {
+//         for p in self.points() {
+//             canvas.draw_pixel(point + p, self.color);
+//         }
+//     }
+// }

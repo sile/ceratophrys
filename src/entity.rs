@@ -1,4 +1,4 @@
-use crate::{Canvas, Image, Point, Position, Render};
+use crate::{Image, Position};
 
 #[derive(Debug, Default, Clone)]
 pub struct Entity {
@@ -37,12 +37,4 @@ impl Entity {
     }
 }
 
-impl Render for Entity {
-    fn render(&self, offset: Point, canvas: &mut Canvas) {
-        let offset = offset + self.offset;
-        self.image.render(offset, canvas);
-        for child in &self.children {
-            child.render(offset, canvas);
-        }
-    }
-}
+// TODO: Into<Image>

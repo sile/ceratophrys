@@ -1,9 +1,9 @@
-use crate::{Point, Render};
+use crate::Point;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Offset<T> {
-    offset: Point,
-    image: T,
+    pub offset: Point,
+    pub image: T,
 }
 
 impl<T> Offset<T> {
@@ -12,8 +12,8 @@ impl<T> Offset<T> {
     }
 }
 
-impl<T: Render> Render for Offset<T> {
-    fn render(&self, point: Point, canvas: &mut crate::Canvas) {
-        self.image.render(point + self.offset, canvas);
-    }
-}
+// impl<T: Render> Render for Offset<T> {
+//     fn render(&self, point: Point, canvas: &mut crate::Canvas) {
+//         self.image.render(point + self.offset, canvas);
+//     }
+// }

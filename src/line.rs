@@ -1,9 +1,9 @@
-use crate::{Canvas, Color, Point, Render};
+use crate::{Color, Point};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Line {
-    point: Point,
-    color: Color,
+    pub point: Point,
+    pub color: Color,
 }
 
 impl Line {
@@ -36,13 +36,13 @@ impl Line {
     }
 }
 
-impl Render for Line {
-    fn render(&self, point: Point, canvas: &mut Canvas) {
-        for p in self.points() {
-            canvas.draw_pixel(point + p, self.color);
-        }
-    }
-}
+// impl Render for Line {
+//     fn render(&self, point: Point, canvas: &mut Canvas) {
+//         for p in self.points() {
+//             canvas.draw_pixel(point + p, self.color);
+//         }
+//     }
+// }
 
 #[derive(Debug, Clone, Copy)]
 struct Rational {

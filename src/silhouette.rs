@@ -1,8 +1,6 @@
-use crate::{Canvas, Color, Point, Render};
-
 #[derive(Debug, Clone, Copy)]
 pub struct Silhouette<T> {
-    image: T,
+    pub image: T,
 }
 
 impl<T> Silhouette<T> {
@@ -11,14 +9,14 @@ impl<T> Silhouette<T> {
     }
 }
 
-impl<T: Render> Render for Silhouette<T> {
-    fn render(&self, offset: Point, canvas: &mut Canvas) {
-        let image = self.image.to_image();
-        for (point, color) in image.pixels() {
-            if color.is_transparent() {
-                continue;
-            }
-            canvas.set_pixel(point + offset, Color::rgb_hex(0x000000));
-        }
-    }
-}
+// impl<T: Render> Render for Silhouette<T> {
+//     fn render(&self, offset: Point, canvas: &mut Canvas) {
+//         let image = self.image.to_image();
+//         for (point, color) in image.pixels() {
+//             if color.is_transparent() {
+//                 continue;
+//             }
+//             canvas.set_pixel(point + offset, Color::rgb_hex(0x000000));
+//         }
+//     }
+// }
