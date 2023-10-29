@@ -12,6 +12,8 @@ impl Image {
         Self { size, pixels }
     }
 
+    // TODO: from_text(), to_text()
+
     pub fn size(&self) -> Size {
         self.size
     }

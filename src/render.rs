@@ -1,6 +1,7 @@
 use crate::{Canvas, Entity, Image, Offset, Point};
 
 pub trait Render {
+    // TODO: remove offset
     fn render(&self, offset: Point, canvas: &mut Canvas);
 
     fn to_image(&self) -> Image {

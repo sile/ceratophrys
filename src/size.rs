@@ -7,6 +7,8 @@ pub struct Size {
 }
 
 impl Size {
+    pub const EMPTY: Self = Self::new(0, 0);
+
     pub const fn new(width: u16, height: u16) -> Self {
         Self { width, height }
     }

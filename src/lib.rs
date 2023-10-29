@@ -1,6 +1,7 @@
 pub mod bmp;
 pub mod filters;
 pub mod gif;
+pub mod shapes;
 // TODO: text
 
 mod canvas;
@@ -16,7 +17,7 @@ mod point;
 mod polygon;
 mod rectangle;
 mod render;
-mod scale;
+mod shape;
 mod silhouette;
 mod size;
 mod text_image;
@@ -34,7 +35,7 @@ pub use point::Point;
 pub use polygon::Polygon;
 pub use rectangle::Rectangle;
 pub use render::{Render, RenderExt};
-pub use scale::Scale;
+pub use shape::Shape;
 pub use silhouette::Silhouette;
 pub use size::Size;
 pub use text_image::TextImage;
