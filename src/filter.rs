@@ -1,19 +1,27 @@
-use crate::Animation;
-
 pub trait Filter<T> {
     fn filter(&self, target: T) -> T;
 }
 
-impl<T, F> Filter<Animation<F>> for T
+impl<T> Filter<T> for Box<dyn Filter<T>> {
+    fn filter(&self, target: T) -> T {
+        (**self).filter(target)
+    }
+}
+
+impl<T, F> Filter<T> for &[F]
 where
-    T: Filter<F>,
+    F: Filter<T>,
 {
-    fn filter(&self, mut target: Animation<F>) -> Animation<F> {
-        target.frames = target
-            .frames
-            .into_iter()
-            .map(|frame| self.filter(frame))
-            .collect();
-        target
+    fn filter(&self, target: T) -> T {
+        self.iter().fold(target, |acc, x| x.filter(acc))
+    }
+}
+
+impl<T, F> Filter<T> for Vec<F>
+where
+    F: Filter<T>,
+{
+    fn filter(&self, target: T) -> T {
+        self.as_slice().filter(target)
     }
 }
