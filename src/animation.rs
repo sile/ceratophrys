@@ -1,4 +1,4 @@
-use crate::{Entity, Image, Size};
+use crate::{Entity, Filter, Image, Size};
 use std::{num::NonZeroU8, time::Duration};
 
 #[derive(Debug, Clone)]
@@ -90,6 +90,10 @@ impl<T> Animation<T> {
             frames: self.frames.into_iter().map(f).collect(),
             fps: self.fps,
         }
+    }
+
+    pub fn filter<F: Filter<T>>(self, f: F) -> Animation<T> {
+        self.map_frame(|frame| f.filter(frame))
     }
 }
 

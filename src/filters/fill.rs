@@ -1,13 +1,6 @@
 use crate::{Color, Entity, Filter, Image};
 use std::collections::BTreeSet;
 
-pub fn fill<T>(color: Color, target: T) -> T
-where
-    Fill: Filter<T>,
-{
-    Fill::new(color).filter(target)
-}
-
 #[derive(Debug, Clone, Copy)]
 pub struct Fill(Color);
 

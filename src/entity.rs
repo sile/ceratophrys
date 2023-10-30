@@ -1,4 +1,4 @@
-use crate::{Image, Pixel, Position};
+use crate::{Filter, Image, Pixel, Position};
 
 #[derive(Debug, Default, Clone)]
 pub struct Entity {
@@ -53,5 +53,9 @@ impl Entity {
 
     pub fn to_image(&self) -> Image {
         Image::from_iter(self.pixels())
+    }
+
+    pub fn filter<F: Filter<Entity>>(self, filter: F) -> Self {
+        filter.filter(self)
     }
 }

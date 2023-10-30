@@ -1,4 +1,4 @@
-use crate::{Color, Pixel, Point, Size};
+use crate::{Color, Filter, Pixel, Point, Size};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
@@ -73,6 +73,7 @@ impl Image {
         self.pixels.chunks(self.size.width as usize)
     }
 
+    // TODO
     // pub fn set_pixel(&mut self, pixel: Pixel) {
     //     let i = self.size.width as usize * pixel.position.y as usize + pixel.position.x as usize;
     //     if let Some(c) = self.pixels.get_mut(i) {
@@ -84,6 +85,10 @@ impl Image {
         self.pixels
             .get(self.size.width as usize * point.y as usize + point.x as usize)
             .copied()
+    }
+
+    pub fn filter<F: Filter<Image>>(self, filter: F) -> Self {
+        filter.filter(self)
     }
 }
 

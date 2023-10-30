@@ -1,13 +1,6 @@
 use crate::{Entity, Filter, Image, Pixel, Size};
 use std::num::NonZeroU8;
 
-pub fn scale<T>(scale: NonZeroU8, target: T) -> T
-where
-    Scale: Filter<T>,
-{
-    Scale::new(scale).filter(target)
-}
-
 #[derive(Debug, Clone, Copy)]
 pub struct Scale(NonZeroU8);
 
