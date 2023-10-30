@@ -12,6 +12,13 @@ impl<T> Animation<T> {
         Self::default()
     }
 
+    pub fn still_frame(frame: T) -> Self {
+        Self {
+            frames: vec![frame],
+            fps: NonZeroU8::MAX,
+        }
+    }
+
     pub fn frame(mut self, frame: T) -> Self {
         self.frames.push(frame);
         self
