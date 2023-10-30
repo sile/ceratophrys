@@ -1,17 +1,20 @@
-use crate::{Color, Image, Size};
-use std::{collections::BTreeSet, io::Write, time::Duration};
+use crate::{Animation, Color, Image};
+use std::{collections::BTreeSet, io::Write};
 
 #[derive(Debug, Default)]
 pub struct AnimatedGifImage {
-    frames: Vec<Frame>,
-    size: Size,
+    anime: Animation<Image>,
     global_palette: BTreeSet<Color>,
     repeat: bool,
 }
 
 impl AnimatedGifImage {
-    pub fn new() -> Self {
-        Self::default()
+    pub fn new(anime: Animation<Image>) -> Self {
+        Self {
+            anime,
+            global_palette: BTreeSet::new(),
+            repeat: false,
+        }
     }
 
     pub fn repeat(&mut self) -> &mut Self {
@@ -19,28 +22,12 @@ impl AnimatedGifImage {
         self
     }
 
-    pub fn frame(&mut self, image: Image, delay: Duration) -> &mut Self {
-        self.size.width = self.size.width.max(image.size().width);
-        self.size.height = self.size.height.max(image.size().height);
-
-        self.global_palette.extend(image.colors());
-
-        self.frames.push(Frame { image, delay });
-        self
-    }
-
-    pub fn frames(&mut self, frames: impl Iterator<Item = (Image, Duration)>) -> &mut Self {
-        for (image, delay) in frames {
-            self.frame(image, delay);
-        }
-        self
-    }
-
     pub fn write_to<W: Write>(&self, writer: W) -> Result<(), gif::EncodingError> {
+        let size = self.anime.get_size();
         let mut encoder = gif::Encoder::new(
             writer,
-            self.size.width,
-            self.size.height,
+            size.width,
+            size.height,
             &self
                 .global_palette
                 .iter()
@@ -52,13 +39,12 @@ impl AnimatedGifImage {
             encoder.set_repeat(gif::Repeat::Infinite)?;
         }
 
-        for frame in &self.frames {
-            let delay = frame.delay.as_millis() as u16 / 10;
+        let delay = self.anime.get_frame_duration().as_millis() as u16 / 10;
+        for frame in &self.anime.frames {
             let mut frame = gif::Frame::from_rgb(
-                self.size.width,
-                self.size.height,
+                frame.size().width,
+                frame.size().height,
                 &frame
-                    .image
                     .colors()
                     .iter()
                     .flat_map(|c| [c.r, c.g, c.b].into_iter())
@@ -71,10 +57,4 @@ impl AnimatedGifImage {
 
         Ok(())
     }
-}
-
-#[derive(Debug)]
-struct Frame {
-    image: Image,
-    delay: Duration,
 }

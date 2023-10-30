@@ -33,6 +33,14 @@ impl Size {
             .flat_map(move |y| (0..self.width).map(move |x| Point::new(x as i16, y as i16)))
     }
 
+    pub fn max(self, other: Self) -> Self {
+        Self::new(self.width.max(other.width), self.height.max(other.height))
+    }
+
+    pub fn min(self, other: Self) -> Self {
+        Self::new(self.width.min(other.width), self.height.min(other.height))
+    }
+
     pub fn edge_points(self) -> impl Iterator<Item = Point> {
         // TODO: Avoid allocation
         let mut points = Vec::new();

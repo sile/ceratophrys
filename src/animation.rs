@@ -1,4 +1,4 @@
-use crate::Entity;
+use crate::{Entity, Image, Size};
 use std::{num::NonZeroU8, time::Duration};
 
 #[derive(Debug, Clone)]
@@ -65,6 +65,16 @@ impl<T> Animation<T> {
 
     pub fn get_nth_frame_time(&self, n: usize) -> Duration {
         Duration::from_secs(n as u64) / u32::from(self.fps.get())
+    }
+}
+
+impl Animation<Image> {
+    pub fn get_size(&self) -> Size {
+        let mut size = Size::EMPTY;
+        for frame in &self.frames {
+            size = size.max(frame.size());
+        }
+        size
     }
 }
 
