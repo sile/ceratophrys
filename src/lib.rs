@@ -10,7 +10,6 @@ mod filter;
 mod image;
 mod pixel;
 mod point;
-mod silhouette;
 mod size;
 
 pub use animation::Animation;
@@ -20,7 +19,6 @@ pub use filter::Filter;
 pub use image::Image;
 pub use pixel::Pixel;
 pub use point::Point;
-pub use silhouette::Silhouette;
 pub use size::Size;
 
 pub type Position = Point;

@@ -73,14 +73,6 @@ impl Image {
         self.pixels.chunks(self.size.width as usize)
     }
 
-    // TODO
-    // pub fn set_pixel(&mut self, pixel: Pixel) {
-    //     let i = self.size.width as usize * pixel.position.y as usize + pixel.position.x as usize;
-    //     if let Some(c) = self.pixels.get_mut(i) {
-    //         *c = pixel.color;
-    //     }
-    // }
-
     pub fn get_color(&self, point: Point) -> Option<Color> {
         self.pixels
             .get(self.size.width as usize * point.y as usize + point.x as usize)
