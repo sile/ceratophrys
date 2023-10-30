@@ -34,6 +34,14 @@ impl<T> Animation<T> {
         self
     }
 
+    pub fn fps4(self) -> Self {
+        self.fps(NonZeroU8::new(4).expect("unreachable"))
+    }
+
+    pub fn fps5(self) -> Self {
+        self.fps(NonZeroU8::new(5).expect("unreachable"))
+    }
+
     pub fn fps10(self) -> Self {
         self.fps(NonZeroU8::new(10).expect("unreachable"))
     }
