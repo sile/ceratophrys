@@ -66,6 +66,16 @@ impl<T> Animation<T> {
     pub fn get_nth_frame_time(&self, n: usize) -> Duration {
         Duration::from_secs(n as u64) / u32::from(self.fps.get())
     }
+
+    pub fn map_frame<F, U>(self, f: F) -> Animation<U>
+    where
+        F: FnMut(T) -> U,
+    {
+        Animation {
+            frames: self.frames.into_iter().map(f).collect(),
+            fps: self.fps,
+        }
+    }
 }
 
 impl Animation<Image> {
