@@ -14,27 +14,30 @@ impl Filter<Image> for Fill {
     fn filter(&self, mut image: Image) -> Image {
         let mut stack = image
             .size()
-            .edge_points()
+            .edge_positions()
             .filter(|p| image.get_color(*p).unwrap_or_default().is_transparent())
             .collect::<Vec<_>>();
-        let mut outer_points = BTreeSet::new();
-        while let Some(point) = stack.pop() {
-            if outer_points.contains(&point)
-                || !image.size().contains(point)
-                || !image.get_color(point).unwrap_or_default().is_transparent()
+        let mut outer_positions = BTreeSet::new();
+        while let Some(position) = stack.pop() {
+            if outer_positions.contains(&position)
+                || !image.size().contains(position)
+                || !image
+                    .get_color(position)
+                    .unwrap_or_default()
+                    .is_transparent()
             {
                 continue;
             }
-            outer_points.insert(point);
+            outer_positions.insert(position);
 
-            stack.push(point.move_x(-1));
-            stack.push(point.move_x(1));
-            stack.push(point.move_y(-1));
-            stack.push(point.move_y(1));
+            stack.push(position.move_x(-1));
+            stack.push(position.move_x(1));
+            stack.push(position.move_y(-1));
+            stack.push(position.move_y(1));
         }
 
-        for (position, color) in image.size().points().zip(image.colors_mut().iter_mut()) {
-            if color.is_transparent() && !outer_points.contains(&position) {
+        for (position, color) in image.size().positions().zip(image.colors_mut().iter_mut()) {
+            if color.is_transparent() && !outer_positions.contains(&position) {
                 *color = self.0;
             }
         }

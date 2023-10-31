@@ -9,7 +9,7 @@ mod entity;
 mod filter;
 mod image;
 mod pixel;
-mod point;
+mod position;
 mod size;
 
 pub use animation::Animation;
@@ -18,7 +18,5 @@ pub use entity::Entity;
 pub use filter::Filter;
 pub use image::Image;
 pub use pixel::Pixel;
-pub use point::Point;
+pub use position::Position;
 pub use size::Size;
-
-pub type Position = Point;

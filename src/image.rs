@@ -1,4 +1,4 @@
-use crate::{Color, Filter, Pixel, Point, Size};
+use crate::{Color, Filter, Pixel, Position, Size};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
@@ -64,7 +64,7 @@ impl Image {
 
     pub fn pixels(&self) -> impl '_ + Iterator<Item = Pixel> {
         self.size
-            .points()
+            .positions()
             .zip(self.pixels.iter().copied())
             .map(|(position, color)| Pixel::new(position, color))
     }
@@ -73,9 +73,9 @@ impl Image {
         self.pixels.chunks(self.size.width as usize)
     }
 
-    pub fn get_color(&self, point: Point) -> Option<Color> {
+    pub fn get_color(&self, position: Position) -> Option<Color> {
         self.pixels
-            .get(self.size.width as usize * point.y as usize + point.x as usize)
+            .get(self.size.width as usize * position.y as usize + position.x as usize)
             .copied()
     }
 
@@ -87,8 +87,8 @@ impl Image {
 impl FromIterator<Pixel> for Image {
     fn from_iter<T: IntoIterator<Item = Pixel>>(iter: T) -> Self {
         let mut pixels = Vec::new();
-        let mut position_min = Point::MAX;
-        let mut position_max = Point::MIN;
+        let mut position_min = Position::MAX;
+        let mut position_max = Position::MIN;
         for pixel in iter {
             pixels.push(pixel);
             position_min = position_min.min(pixel.position);

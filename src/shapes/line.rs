@@ -1,18 +1,18 @@
-use crate::{Color, Pixel, Point};
+use crate::{Color, Pixel, Position};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Line {
     pub color: Color,
-    pub position: Point,
-    pub vector: Point,
+    pub position: Position,
+    pub vector: Position,
 }
 
 impl Line {
     pub const fn new() -> Self {
         Self {
             color: Color::BLACK,
-            position: Point::ORIGIN,
-            vector: Point::ORIGIN,
+            position: Position::ORIGIN,
+            vector: Position::ORIGIN,
         }
     }
 
@@ -20,11 +20,11 @@ impl Line {
         Self { color, ..self }
     }
 
-    pub const fn position(self, position: Point) -> Self {
+    pub const fn position(self, position: Position) -> Self {
         Self { position, ..self }
     }
 
-    pub const fn vector(self, vector: Point) -> Self {
+    pub const fn vector(self, vector: Position) -> Self {
         Self { vector, ..self }
     }
 }
@@ -40,18 +40,18 @@ impl IntoIterator for Line {
     type IntoIter = Box<dyn Iterator<Item = Pixel>>;
 
     fn into_iter(self) -> Self::IntoIter {
-        let p0 = Point::ORIGIN;
+        let p0 = Position::ORIGIN;
         let p1 = self.vector;
         let dx = (p1.x - p0.x).abs() + 1;
         let dy = (p1.y - p0.y).abs() + 1;
         let sign_y = if p1.y > p0.y { 1 } else { -1 };
         let sign_x = if p1.x > p0.x { 1 } else { -1 };
         let (f, r, n, v0, sign0, mut v1, sign1) = if dx > dy {
-            let f = Point::xy as fn(i16, i16) -> Point;
+            let f = Position::xy as fn(i16, i16) -> Position;
             let r = Rational::new(dx, dy);
             (f, r, dx, p0.x, sign_x, p0.y, sign_y)
         } else {
-            let f = Point::yx as fn(i16, i16) -> Point;
+            let f = Position::yx as fn(i16, i16) -> Position;
             let r = Rational::new(dy, dx);
             (f, r, dy, p0.y, sign_y, p0.x, sign_x)
         };

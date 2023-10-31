@@ -1,4 +1,4 @@
-use crate::Point;
+use crate::Position;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Size {
@@ -9,6 +9,7 @@ pub struct Size {
 impl Size {
     pub const EMPTY: Self = Self::new(0, 0);
 
+    // TODO: rename
     pub const fn new(width: u16, height: u16) -> Self {
         Self { width, height }
     }
@@ -17,20 +18,20 @@ impl Size {
         Self::new(size, size)
     }
 
-    pub fn contains(self, point: Point) -> bool {
-        if point.x < 0 || point.y < 0 {
-            return false;
-        }
-        (0..self.height).contains(&(point.y as u16)) && (0..self.width).contains(&(point.x as u16))
+    pub const fn is_empty(self) -> bool {
+        self.width == 0 || self.height == 0
     }
 
     pub fn area(self) -> u32 {
         u32::from(self.width) * u32::from(self.height)
     }
 
-    pub fn points(self) -> impl Iterator<Item = Point> {
-        (0..self.height)
-            .flat_map(move |y| (0..self.width).map(move |x| Point::new(x as i16, y as i16)))
+    pub fn contains(self, position: Position) -> bool {
+        if position.x < 0 || position.y < 0 {
+            return false;
+        }
+        (0..self.height).contains(&(position.y as u16))
+            && (0..self.width).contains(&(position.x as u16))
     }
 
     pub fn max(self, other: Self) -> Self {
@@ -41,23 +42,28 @@ impl Size {
         Self::new(self.width.min(other.width), self.height.min(other.height))
     }
 
-    pub fn edge_points(self) -> impl Iterator<Item = Point> {
-        // TODO: Avoid allocation
-        let mut points = Vec::new();
-        if self.is_empty() {
-            return points.into_iter();
-        }
-
-        points.extend((0..self.width).map(move |x| Point::new(x as i16, 0)));
-        points.extend((0..self.width).map(move |x| Point::new(x as i16, self.height as i16 - 1)));
-        points.extend((0..self.height).map(move |y| Point::new(0, y as i16)));
-        points.extend((0..self.height).map(move |y| Point::new(self.width as i16 - 1, y as i16)));
-        points.sort();
-        points.dedup();
-        points.into_iter()
+    pub fn positions(self) -> impl Iterator<Item = Position> {
+        let w = i16::try_from(self.width).expect("width is too large");
+        let h = i16::try_from(self.height).expect("height is too large");
+        (0..h).flat_map(move |y| (0..w).map(move |x| Position::xy(x, y)))
     }
 
-    pub const fn is_empty(self) -> bool {
-        self.width == 0 || self.height == 0
+    pub fn edge_positions(self) -> impl Iterator<Item = Position> {
+        fn if_iter(
+            cond: bool,
+            iter: impl Iterator<Item = Position>,
+        ) -> impl Iterator<Item = Position> {
+            cond.then_some(iter).into_iter().flatten()
+        }
+
+        let w = i16::try_from(self.width).expect("width is too large");
+        let h = i16::try_from(self.height).expect("height is too large");
+
+        let iter0 = if_iter(h > 0, (0..w).map(move |x| Position::xy(x, 0)));
+        let iter1 = if_iter(h > 1, (0..w).map(move |x| Position::xy(x, h - 1)));
+        let iter2 = if_iter(w > 0, (1..h - 1).map(move |y| Position::xy(0, y)));
+        let iter3 = if_iter(w > 1, (1..h - 1).map(move |y| Position::xy(w - 1, y)));
+
+        iter0.chain(iter1).chain(iter2).chain(iter3)
     }
 }

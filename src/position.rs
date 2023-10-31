@@ -3,18 +3,18 @@ use std::{
     ops::{Add, Mul, Sub},
 };
 
-// TODO(?): s/Point/Position/
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct Point {
+pub struct Position {
     pub x: i16,
     pub y: i16,
 }
 
-impl Point {
+impl Position {
     pub const ORIGIN: Self = Self::new(0, 0);
     pub const MIN: Self = Self::new(i16::MIN, i16::MIN);
     pub const MAX: Self = Self::new(i16::MAX, i16::MAX);
 
+    // TODO: remove
     pub const fn new(x: i16, y: i16) -> Self {
         Self { x, y }
     }
@@ -63,19 +63,19 @@ impl Point {
     }
 }
 
-impl PartialOrd for Point {
+impl PartialOrd for Position {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
-impl Ord for Point {
+impl Ord for Position {
     fn cmp(&self, other: &Self) -> Ordering {
         self.y.cmp(&other.y).then(self.x.cmp(&other.x))
     }
 }
 
-impl Add for Point {
+impl Add for Position {
     type Output = Self;
 
     fn add(self, Self { x, y }: Self) -> Self::Output {
@@ -83,7 +83,7 @@ impl Add for Point {
     }
 }
 
-impl Sub for Point {
+impl Sub for Position {
     type Output = Self;
 
     fn sub(self, Self { x, y }: Self) -> Self::Output {
@@ -91,7 +91,7 @@ impl Sub for Point {
     }
 }
 
-impl Mul<i16> for Point {
+impl Mul<i16> for Position {
     type Output = Self;
 
     fn mul(self, rhs: i16) -> Self::Output {

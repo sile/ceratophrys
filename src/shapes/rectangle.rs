@@ -1,9 +1,9 @@
-use crate::{Color, Pixel, Point, Size};
+use crate::{Color, Pixel, Position, Size};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Rectangle {
     pub color: Color,
-    pub position: Point,
+    pub position: Position,
     pub size: Size,
     pub fill: bool,
 }
@@ -12,7 +12,7 @@ impl Rectangle {
     pub const fn new() -> Self {
         Self {
             color: Color::BLACK,
-            position: Point::ORIGIN,
+            position: Position::ORIGIN,
             size: Size::EMPTY,
             fill: false,
         }
@@ -22,7 +22,7 @@ impl Rectangle {
         Self { color, ..self }
     }
 
-    pub const fn position(self, position: Point) -> Self {
+    pub const fn position(self, position: Position) -> Self {
         Self { position, ..self }
     }
 
@@ -49,7 +49,7 @@ impl IntoIterator for Rectangle {
         if self.fill || self.size.is_empty() {
             return Box::new(
                 self.size
-                    .points()
+                    .positions()
                     .map(move |p| Pixel::new(self.position + p, self.color)),
             );
         }

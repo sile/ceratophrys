@@ -17,7 +17,7 @@ impl Filter<Image> for Scale {
             .pixels()
             .flat_map(|Pixel { position, color }| {
                 Size::square(u16::from(scale))
-                    .points()
+                    .positions()
                     .map(move |offset| Pixel::new(position * i16::from(scale) + offset, color))
             })
             .collect()
