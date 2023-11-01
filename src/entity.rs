@@ -21,11 +21,14 @@ impl Entity {
     }
 
     pub fn image_pixels(self, pixels: impl IntoIterator<Item = Pixel>) -> Self {
+        //self.color(Color::ch(' '), Color::BLACK);
         Self {
             image: Image::from_iter(pixels),
             ..self
         }
     }
+
+    // TODO: flatten
 
     pub fn offset(self, offset: Position) -> Self {
         Self { offset, ..self }

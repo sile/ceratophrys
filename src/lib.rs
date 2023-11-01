@@ -1,6 +1,6 @@
-pub mod bmp;
+pub mod bmp; // TODO: feature
 pub mod filters;
-pub mod gif;
+pub mod gif; // TODO: feature
 pub mod shapes;
 
 mod animation;
@@ -14,8 +14,8 @@ mod size;
 
 pub use animation::Animation;
 pub use color::Color;
-pub use entity::Entity;
-pub use filter::Filter;
+pub use entity::Entity; // TODO: remove
+pub use filter::Filter; // TODO: move to filters
 pub use image::Image;
 pub use pixel::Pixel;
 pub use position::Position;
