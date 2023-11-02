@@ -16,7 +16,7 @@ pub use animation::Animation;
 pub use color::Color;
 pub use entity::Entity; // TODO: remove
 pub use filter::Filter; // TODO: move to filters
-pub use image::Image;
+pub use image::{Image, Image2};
 pub use pixel::Pixel;
 pub use position::Position;
 pub use size::Size;

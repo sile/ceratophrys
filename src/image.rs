@@ -2,6 +2,44 @@ use crate::{Color, Filter, Pixel, Position, Size};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
+pub struct Image2 {
+    name: Option<String>,
+    pixels: BTreeMap<Position, Color>,
+    children: Vec<Self>,
+}
+
+impl Image2 {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    // TODO: from_text(), to_text()
+    // TODO: flatten
+
+    pub fn iter(&self) -> impl '_ + Iterator<Item = Pixel> {
+        self.pixels
+            .iter()
+            .map(|(&position, &color)| Pixel::new(position, color))
+            .chain(
+                Box::new(self.children.iter().flat_map(|child| child.iter()))
+                    as Box<dyn Iterator<Item = Pixel>>,
+            )
+    }
+}
+
+impl FromIterator<Pixel> for Image2 {
+    fn from_iter<T: IntoIterator<Item = Pixel>>(iter: T) -> Self {
+        todo!()
+    }
+}
+
+impl Extend<Pixel> for Image2 {
+    fn extend<T: IntoIterator<Item = Pixel>>(&mut self, iter: T) {
+        todo!()
+    }
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image {
     size: Size,
     pixels: Vec<Color>,
