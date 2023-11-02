@@ -87,6 +87,7 @@ impl Sub for Position {
     type Output = Self;
 
     fn sub(self, Self { x, y }: Self) -> Self::Output {
+        // TODO: Should panic instead
         Self::new(self.x.saturating_sub(x), self.y.saturating_sub(y))
     }
 }

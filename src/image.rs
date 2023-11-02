@@ -3,9 +3,9 @@ use std::collections::BTreeMap;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 pub struct Image2 {
-    name: Option<String>,
-    pixels: BTreeMap<Position, Color>,
-    children: Vec<Self>,
+    pub name: Option<String>,
+    pub pixels: BTreeMap<Position, Color>,
+    pub children: Vec<Self>,
 }
 
 impl Image2 {
@@ -14,7 +14,30 @@ impl Image2 {
     }
 
     // TODO: from_text(), to_text()
-    // TODO: flatten
+
+    pub fn name(self, name: &str) -> Self {
+        Self {
+            name: Some(name.to_owned()),
+            ..self
+        }
+    }
+
+    pub fn child(mut self, child: Self) -> Self {
+        self.children.push(child);
+        self
+    }
+
+    pub fn to_size_and_colors(&self) -> (Size, Vec<Color>) {
+        let size = Size::from_iter(self.iter().map(|p| p.position));
+
+        let mut colors = vec![Color::TRANSPARENT; size.area() as usize];
+        for pixel in self.iter() {
+            let i = size.width as usize * pixel.position.y as usize + pixel.position.x as usize;
+            colors[i] = pixel.color.alpha_blend(colors[i]);
+        }
+
+        (size, colors)
+    }
 
     pub fn iter(&self) -> impl '_ + Iterator<Item = Pixel> {
         self.pixels
@@ -27,15 +50,42 @@ impl Image2 {
     }
 }
 
+impl IntoIterator for Image2 {
+    type Item = Pixel;
+    type IntoIter = Box<dyn Iterator<Item = Pixel>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        Box::new(
+            self.pixels
+                .into_iter()
+                .map(|(position, color)| Pixel::new(position, color))
+                .chain(
+                    self.children
+                        .into_iter()
+                        .flat_map(|child| child.into_iter()),
+                ),
+        )
+    }
+}
+
 impl FromIterator<Pixel> for Image2 {
     fn from_iter<T: IntoIterator<Item = Pixel>>(iter: T) -> Self {
-        todo!()
+        let mut image = Self::new();
+        image.extend(iter);
+        image
     }
 }
 
 impl Extend<Pixel> for Image2 {
     fn extend<T: IntoIterator<Item = Pixel>>(&mut self, iter: T) {
-        todo!()
+        for pixel in iter {
+            self.pixels
+                .entry(pixel.position)
+                .and_modify(|color| {
+                    *color = pixel.color.alpha_blend(*color);
+                })
+                .or_insert(pixel.color);
+        }
     }
 }
 

@@ -67,3 +67,22 @@ impl Size {
         iter0.chain(iter1).chain(iter2).chain(iter3)
     }
 }
+
+impl FromIterator<Position> for Size {
+    fn from_iter<T: IntoIterator<Item = Position>>(iter: T) -> Self {
+        let mut min = Position::MAX;
+        let mut max = Position::MIN;
+
+        for position in iter {
+            min = min.min(position);
+            max = max.max(position);
+        }
+
+        if max < min {
+            Self::EMPTY
+        } else {
+            let size = max - min;
+            Self::new(size.x as u16 + 1, size.y as u16 + 1)
+        }
+    }
+}
