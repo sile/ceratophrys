@@ -1,6 +1,12 @@
 [package]
 name = "ceratophrys"
-version = "0.1.0"
+version = "0.0.1"
+authors = ["Takeru Ohta <phjgt308@gmail.com>"]
+description = "Library to draw pixel art as code"
+homepage = "https://github.com/sile/ceratophrys"
+repository = "https://github.com/sile/ceratophrys"
+readme = "README.md"
+license = "MIT"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
