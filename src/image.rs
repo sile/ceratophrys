@@ -55,6 +55,18 @@ impl Image {
         }
     }
 
+    pub fn get_color(&self, position: Position) -> Color {
+        let mut color = self
+            .pixels
+            .get(&position)
+            .copied()
+            .unwrap_or(Color::TRANSPARENT);
+        for child in &self.children {
+            color = child.get_color(position).alpha_blend(color);
+        }
+        color
+    }
+
     pub fn child(mut self, child: Self) -> Self {
         self.children.push(child);
         self
@@ -70,6 +82,10 @@ impl Image {
         }
 
         (size, colors)
+    }
+
+    pub fn positions(&self) -> impl '_ + Iterator<Item = Position> {
+        self.iter().map(|p| p.position)
     }
 
     pub fn iter(&self) -> impl '_ + Iterator<Item = Pixel> {

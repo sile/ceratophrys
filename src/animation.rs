@@ -1,4 +1,4 @@
-use crate::{Filter, Image};
+use crate::{Filter, Image, Size};
 use std::{num::NonZeroU8, time::Duration};
 
 #[derive(Debug, Clone)]
@@ -76,6 +76,14 @@ impl Animation {
 
     pub fn get_duration(&self) -> Duration {
         Duration::from_secs(self.frames.len() as u64) / u32::from(self.fps.get())
+    }
+
+    pub fn get_max_frame_size(&self) -> Size {
+        let mut size = Size::EMPTY;
+        for frame in &self.frames {
+            size = size.max(frame.iter().map(|p| p.position).collect());
+        }
+        size
     }
 
     pub fn get_nth_frame_time(&self, n: usize) -> Duration {

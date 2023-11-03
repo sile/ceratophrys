@@ -23,7 +23,7 @@ impl Filter for Scale {
             })
             .collect();
         for child in &mut image.children {
-            *child = child.filter(std::mem::take(child));
+            *child = self.filter(std::mem::take(child));
         }
         image
     }

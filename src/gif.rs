@@ -23,7 +23,7 @@ impl AnimatedGifImage {
     }
 
     pub fn write_to<W: Write>(&self, writer: W) -> Result<(), gif::EncodingError> {
-        let size = self.anime.get_size();
+        let size = self.anime.get_max_frame_size();
         let mut encoder = gif::Encoder::new(
             writer,
             size.width,
@@ -41,11 +41,11 @@ impl AnimatedGifImage {
 
         let delay = self.anime.get_frame_duration().as_millis() as u16 / 10;
         for frame in &self.anime.frames {
+            let (size, colors) = frame.to_size_and_colors();
             let mut frame = gif::Frame::from_rgb(
-                frame.size().width,
-                frame.size().height,
-                &frame
-                    .colors()
+                size.width,
+                size.height,
+                &colors
                     .iter()
                     .flat_map(|c| [c.r, c.g, c.b].into_iter())
                     .collect::<Vec<_>>(),
