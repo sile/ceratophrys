@@ -10,56 +10,51 @@ pub struct Position {
 }
 
 impl Position {
-    pub const ORIGIN: Self = Self::new(0, 0);
-    pub const MIN: Self = Self::new(i16::MIN, i16::MIN);
-    pub const MAX: Self = Self::new(i16::MAX, i16::MAX);
+    pub const ORIGIN: Self = Self::xy(0, 0);
+    pub const MIN: Self = Self::xy(i16::MIN, i16::MIN);
+    pub const MAX: Self = Self::xy(i16::MAX, i16::MAX);
 
-    // TODO: remove
-    pub const fn new(x: i16, y: i16) -> Self {
+    pub const fn xy(x: i16, y: i16) -> Self {
         Self { x, y }
     }
 
-    pub const fn xy(x: i16, y: i16) -> Self {
-        Self::new(x, y)
-    }
-
     pub const fn yx(y: i16, x: i16) -> Self {
-        Self::new(x, y)
+        Self { x, y }
     }
 
     pub const fn move_x(self, x: i16) -> Self {
-        Self::new(self.x.saturating_add(x), self.y)
+        Self::xy(self.x.saturating_add(x), self.y)
     }
 
     pub const fn move_x_unsigned(self, x: u16) -> Self {
-        Self::new(self.x.saturating_add_unsigned(x), self.y)
+        Self::xy(self.x.saturating_add_unsigned(x), self.y)
     }
 
     pub const fn move_y(self, y: i16) -> Self {
-        Self::new(self.x, self.y.saturating_add(y))
+        Self::xy(self.x, self.y.saturating_add(y))
     }
 
     pub const fn move_y_unsigned(self, y: u16) -> Self {
-        Self::new(self.x, self.y.saturating_add_unsigned(y))
+        Self::xy(self.x, self.y.saturating_add_unsigned(y))
     }
 
     pub const fn move_xy(self, x: i16, y: i16) -> Self {
-        Self::new(self.x.saturating_add(x), self.y.saturating_add(y))
+        Self::xy(self.x.saturating_add(x), self.y.saturating_add(y))
     }
 
     pub const fn move_xy_unsigned(self, x: u16, y: u16) -> Self {
-        Self::new(
+        Self::xy(
             self.x.saturating_add_unsigned(x),
             self.y.saturating_add_unsigned(y),
         )
     }
 
     pub fn min(self, other: Self) -> Self {
-        Self::new(self.x.min(other.x), self.y.min(other.y))
+        Self::xy(self.x.min(other.x), self.y.min(other.y))
     }
 
     pub fn max(self, other: Self) -> Self {
-        Self::new(self.x.max(other.x), self.y.max(other.y))
+        Self::xy(self.x.max(other.x), self.y.max(other.y))
     }
 }
 
@@ -79,7 +74,7 @@ impl Add for Position {
     type Output = Self;
 
     fn add(self, Self { x, y }: Self) -> Self::Output {
-        Self::new(self.x.saturating_add(x), self.y.saturating_add(y))
+        Self::xy(self.x.saturating_add(x), self.y.saturating_add(y))
     }
 }
 
@@ -88,7 +83,7 @@ impl Sub for Position {
 
     fn sub(self, Self { x, y }: Self) -> Self::Output {
         // TODO: Should panic instead
-        Self::new(self.x.saturating_sub(x), self.y.saturating_sub(y))
+        Self::xy(self.x.saturating_sub(x), self.y.saturating_sub(y))
     }
 }
 
@@ -96,6 +91,6 @@ impl Mul<i16> for Position {
     type Output = Self;
 
     fn mul(self, rhs: i16) -> Self::Output {
-        Self::new(self.x.saturating_mul(rhs), self.y.saturating_mul(rhs))
+        Self::xy(self.x.saturating_mul(rhs), self.y.saturating_mul(rhs))
     }
 }
