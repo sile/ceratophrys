@@ -13,7 +13,40 @@ impl Image2 {
         Self::default()
     }
 
-    // TODO: from_text(), to_text()
+    pub fn from_text(palette: impl IntoIterator<Item = (char, Color)>, text: &str) -> Self {
+        let palette = BTreeMap::from_iter(palette);
+        text.lines()
+            .enumerate()
+            .flat_map(|(y, line)| {
+                line.chars()
+                    .enumerate()
+                    .map(move |(x, ch)| (Position::xy(x as i16, y as i16), ch))
+            })
+            .map(move |(position, ch)| {
+                let color = palette.get(&ch).copied().unwrap_or(Color::TRANSPARENT);
+                Pixel::new(position, color)
+            })
+            .collect()
+    }
+
+    pub fn to_text(&self) -> String {
+        let mut colors = " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars();
+        let mut color_to_char = BTreeMap::new();
+        let mut text = String::new();
+
+        let (size, pixel_colors) = self.to_size_and_colors();
+        for (i, color) in pixel_colors.into_iter().enumerate() {
+            let ch = color_to_char
+                .entry(color)
+                .or_insert_with(|| colors.next().unwrap_or('?'));
+            text.push(*ch);
+            if (i + 1) % size.width as usize == 0 {
+                text.push('\n');
+            }
+        }
+
+        text
+    }
 
     pub fn name(self, name: &str) -> Self {
         Self {
