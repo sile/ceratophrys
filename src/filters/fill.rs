@@ -1,4 +1,4 @@
-use crate::{Color, Entity, Filter, Image};
+use crate::{Color, Filter, Image};
 use std::collections::BTreeSet;
 
 #[derive(Debug, Clone, Copy)]
@@ -10,7 +10,7 @@ impl Fill {
     }
 }
 
-impl Filter<Image> for Fill {
+impl Filter for Fill {
     fn filter(&self, mut image: Image) -> Image {
         let mut stack = image
             .size()
@@ -41,16 +41,11 @@ impl Filter<Image> for Fill {
                 *color = self.0;
             }
         }
-        image
-    }
-}
 
-impl Filter<Entity> for Fill {
-    fn filter(&self, mut target: Entity) -> Entity {
-        target.image = self.filter(target.image);
-        for child in &mut target.children {
+        for child in &mut image.children {
             *child = self.filter(std::mem::take(child));
         }
-        target
+
+        image
     }
 }

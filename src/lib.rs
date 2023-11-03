@@ -5,7 +5,6 @@ pub mod shapes;
 
 mod animation;
 mod color;
-mod entity;
 mod filter;
 mod image;
 mod pixel;
@@ -14,9 +13,8 @@ mod size;
 
 pub use animation::Animation;
 pub use color::Color;
-pub use entity::Entity; // TODO: remove
 pub use filter::Filter; // TODO: move to filters
-pub use image::{Image, Image2};
+pub use image::Image;
 pub use pixel::Pixel;
 pub use position::Position;
 pub use size::Size;

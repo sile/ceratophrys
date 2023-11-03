@@ -1,4 +1,4 @@
-use crate::{Entity, Filter, Image, Pixel, Size};
+use crate::{Filter, Image, Size};
 use std::num::NonZeroU8;
 
 #[derive(Debug, Clone, Copy)]
@@ -10,28 +10,21 @@ impl Scale {
     }
 }
 
-impl Filter<Image> for Scale {
-    fn filter(&self, target: Image) -> Image {
+impl Filter for Scale {
+    fn filter(&self, mut image: Image) -> Image {
         let scale = self.0.get();
-        target
-            .pixels()
-            .flat_map(|Pixel { position, color }| {
+        image.pixels = image
+            .pixels
+            .into_iter()
+            .flat_map(|(position, color)| {
                 Size::square(u16::from(scale))
                     .positions()
-                    .map(move |offset| Pixel::new(position * i16::from(scale) + offset, color))
+                    .map(move |offset| (position * i16::from(scale) + offset, color))
             })
-            .collect()
-    }
-}
-
-impl Filter<Entity> for Scale {
-    fn filter(&self, mut target: Entity) -> Entity {
-        let scale = i16::from(self.0.get());
-        target.image = self.filter(target.image);
-        for child in &mut target.children {
-            *child = self.filter(std::mem::take(child));
-            child.offset = child.offset * scale;
+            .collect();
+        for child in &mut image.children {
+            *child = child.filter(std::mem::take(child));
         }
-        target
+        image
     }
 }

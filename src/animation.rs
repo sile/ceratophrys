@@ -1,30 +1,30 @@
-use crate::{Entity, Filter, Image, Size};
+use crate::{Filter, Image};
 use std::{num::NonZeroU8, time::Duration};
 
 #[derive(Debug, Clone)]
-pub struct Animation<T = Entity> {
-    pub frames: Vec<T>,
+pub struct Animation {
+    pub frames: Vec<Image>,
     pub fps: NonZeroU8,
 }
 
-impl<T> Animation<T> {
+impl Animation {
     pub fn new() -> Self {
         Self::default()
     }
 
-    pub fn still_frame(frame: T) -> Self {
+    pub fn still_frame(frame: Image) -> Self {
         Self {
             frames: vec![frame],
             fps: NonZeroU8::MAX,
         }
     }
 
-    pub fn frame(mut self, frame: T) -> Self {
+    pub fn frame(mut self, frame: Image) -> Self {
         self.frames.push(frame);
         self
     }
 
-    pub fn frames(mut self, frames: impl IntoIterator<Item = T>) -> Self {
+    pub fn frames(mut self, frames: impl IntoIterator<Item = Image>) -> Self {
         self.frames.extend(frames);
         self
     }
@@ -82,9 +82,9 @@ impl<T> Animation<T> {
         Duration::from_secs(n as u64) / u32::from(self.fps.get())
     }
 
-    pub fn map_frame<F, U>(self, f: F) -> Animation<U>
+    pub fn map_frame<F>(self, f: F) -> Animation
     where
-        F: FnMut(T) -> U,
+        F: FnMut(Image) -> Image,
     {
         Animation {
             frames: self.frames.into_iter().map(f).collect(),
@@ -92,22 +92,12 @@ impl<T> Animation<T> {
         }
     }
 
-    pub fn filter<F: Filter<T>>(self, f: F) -> Animation<T> {
+    pub fn filter<F: Filter>(self, f: F) -> Animation {
         self.map_frame(|frame| f.filter(frame))
     }
 }
 
-impl Animation<Image> {
-    pub fn get_size(&self) -> Size {
-        let mut size = Size::EMPTY;
-        for frame in &self.frames {
-            size = size.max(frame.size());
-        }
-        size
-    }
-}
-
-impl<T> Default for Animation<T> {
+impl Default for Animation {
     fn default() -> Self {
         Self {
             frames: Vec::new(),

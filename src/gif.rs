@@ -1,15 +1,15 @@
-use crate::{Animation, Color, Image};
+use crate::{Animation, Color};
 use std::{collections::BTreeSet, io::Write};
 
 #[derive(Debug, Default)]
 pub struct AnimatedGifImage {
-    anime: Animation<Image>,
+    anime: Animation,
     global_palette: BTreeSet<Color>,
     repeat: bool,
 }
 
 impl AnimatedGifImage {
-    pub fn new(anime: Animation<Image>) -> Self {
+    pub fn new(anime: Animation) -> Self {
         Self {
             anime,
             global_palette: BTreeSet::new(),

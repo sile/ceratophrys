@@ -1,27 +1,29 @@
-pub trait Filter<T> {
-    fn filter(&self, target: T) -> T;
+use crate::Image;
+
+pub trait Filter {
+    fn filter(&self, image: Image) -> Image;
 }
 
-impl<T> Filter<T> for Box<dyn Filter<T>> {
-    fn filter(&self, target: T) -> T {
-        (**self).filter(target)
+impl Filter for Box<dyn Filter> {
+    fn filter(&self, image: Image) -> Image {
+        (**self).filter(image)
     }
 }
 
-impl<T, F> Filter<T> for &[F]
+impl<F> Filter for &[F]
 where
-    F: Filter<T>,
+    F: Filter,
 {
-    fn filter(&self, target: T) -> T {
-        self.iter().fold(target, |acc, x| x.filter(acc))
+    fn filter(&self, image: Image) -> Image {
+        self.iter().fold(image, |acc, x| x.filter(acc))
     }
 }
 
-impl<T, F> Filter<T> for Vec<F>
+impl<F> Filter for Vec<F>
 where
-    F: Filter<T>,
+    F: Filter,
 {
-    fn filter(&self, target: T) -> T {
-        self.as_slice().filter(target)
+    fn filter(&self, image: Image) -> Image {
+        self.as_slice().filter(image)
     }
 }
