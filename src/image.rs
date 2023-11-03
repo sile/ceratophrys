@@ -55,6 +55,18 @@ impl Image {
         }
     }
 
+    pub fn offset(mut self, offset: Position) -> Self {
+        self.pixels = self
+            .pixels
+            .into_iter()
+            .map(|(position, color)| (position + offset, color))
+            .collect();
+        for child in &mut self.children {
+            *child = std::mem::take(child).offset(offset);
+        }
+        self
+    }
+
     pub fn get_color(&self, position: Position) -> Color {
         let mut color = self
             .pixels

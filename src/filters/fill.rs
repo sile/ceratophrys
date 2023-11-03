@@ -1,4 +1,4 @@
-use crate::{filters::Filter, Color, Image, Size};
+use crate::{filters::Filter, Color, Image, Position, Size};
 use std::collections::BTreeSet;
 
 #[derive(Debug, Clone, Copy)]
@@ -12,15 +12,17 @@ impl Fill {
 
 impl Filter for Fill {
     fn filter(&self, image: &mut Image) {
+        let start = image
+            .pixels
+            .keys()
+            .copied()
+            .fold(Position::MAX, Position::min);
         let size = image.pixels.keys().copied().collect::<Size>();
-        let mut stack = size
-            .edge_positions()
-            .filter(|p| image.get_color(*p).is_transparent())
-            .collect::<Vec<_>>();
+        let mut stack = size.edge_positions().map(|p| p + start).collect::<Vec<_>>();
         let mut outer_positions = BTreeSet::new();
         while let Some(position) = stack.pop() {
             if outer_positions.contains(&position)
-                || !size.contains(position)
+                || !size.contains(position - start)
                 || !image.get_color(position).is_transparent()
             {
                 continue;
@@ -33,14 +35,10 @@ impl Filter for Fill {
             stack.push(position.move_y(1));
         }
 
-        for (position, color) in image.pixels.iter_mut() {
-            if color.is_transparent() && !outer_positions.contains(&position) {
-                *color = self.0;
+        for position in size.positions().map(|p| p + start) {
+            if !outer_positions.contains(&position) && image.get_color(position).is_transparent() {
+                image.pixels.insert(position, self.0);
             }
-        }
-
-        for child in &mut image.children {
-            self.filter(child);
         }
     }
 }
