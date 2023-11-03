@@ -74,7 +74,10 @@ impl Add for Position {
     type Output = Self;
 
     fn add(self, Self { x, y }: Self) -> Self::Output {
-        Self::xy(self.x.saturating_add(x), self.y.saturating_add(y))
+        Self::xy(
+            self.x.checked_add(x).expect("addition overflow"),
+            self.y.checked_add(y).expect("addition overflow"),
+        )
     }
 }
 
@@ -82,8 +85,10 @@ impl Sub for Position {
     type Output = Self;
 
     fn sub(self, Self { x, y }: Self) -> Self::Output {
-        // TODO: Should panic instead
-        Self::xy(self.x.saturating_sub(x), self.y.saturating_sub(y))
+        Self::xy(
+            self.x.checked_sub(x).expect("subtraction overflow"),
+            self.y.checked_sub(y).expect("subtraction overflow"),
+        )
     }
 }
 

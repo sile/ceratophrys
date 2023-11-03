@@ -9,13 +9,12 @@ pub struct Size {
 impl Size {
     pub const EMPTY: Self = Self::new(0, 0);
 
-    // TODO: rename
     pub const fn new(width: u16, height: u16) -> Self {
         Self { width, height }
     }
 
-    pub const fn square(size: u16) -> Self {
-        Self::new(size, size)
+    pub const fn square(side: u16) -> Self {
+        Self::new(side, side)
     }
 
     pub const fn is_empty(self) -> bool {
