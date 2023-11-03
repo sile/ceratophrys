@@ -1,4 +1,4 @@
-use crate::{Filter, Image, Size};
+use crate::{filters::Filter, Image, Size};
 use std::{num::NonZeroU8, time::Duration};
 
 #[derive(Debug, Clone)]
@@ -101,7 +101,10 @@ impl Animation {
     }
 
     pub fn filter<F: Filter>(self, f: F) -> Animation {
-        self.map_frame(|frame| f.filter(frame))
+        self.map_frame(|mut frame| {
+            f.filter(&mut frame);
+            frame
+        })
     }
 }
 

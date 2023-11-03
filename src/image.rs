@@ -1,4 +1,4 @@
-use crate::{Color, Filter, Pixel, Position, Size};
+use crate::{filters::Filter, Color, Pixel, Position, Size};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
@@ -98,8 +98,9 @@ impl Image {
             )
     }
 
-    pub fn filter<F: Filter>(self, filter: F) -> Self {
-        filter.filter(self)
+    pub fn filter<F: Filter>(mut self, filter: F) -> Self {
+        filter.filter(&mut self);
+        self
     }
 }
 

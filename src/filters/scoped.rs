@@ -1,4 +1,4 @@
-use crate::{Filter, Image};
+use crate::{filters::Filter, Image};
 
 #[derive(Debug, Clone)]
 pub struct Scoped<F> {
@@ -16,14 +16,13 @@ impl<F> Scoped<F> {
 }
 
 impl<F: Filter> Filter for Scoped<F> {
-    fn filter(&self, mut image: Image) -> Image {
+    fn filter(&self, image: &mut Image) {
         if image.name.as_ref() == Some(&self.target_name) {
-            image = self.filter.filter(image);
+            self.filter.filter(image);
         } else {
             for child in &mut image.children {
-                *child = self.filter(std::mem::take(child))
+                self.filter(child);
             }
         }
-        image
     }
 }

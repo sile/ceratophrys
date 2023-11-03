@@ -1,10 +1,10 @@
-use crate::{Filter, Image};
+use crate::{filters::Filter, Image};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Erase;
 
 impl Filter for Erase {
-    fn filter(&self, _target: Image) -> Image {
-        Image::default()
+    fn filter(&self, image: &mut Image) {
+        *image = Image::default();
     }
 }

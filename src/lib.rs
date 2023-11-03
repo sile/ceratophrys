@@ -13,7 +13,6 @@ mod size;
 
 pub use animation::Animation;
 pub use color::Color;
-pub use filter::Filter; // TODO: move to filters
 pub use image::Image;
 pub use pixel::Pixel;
 pub use position::Position;
