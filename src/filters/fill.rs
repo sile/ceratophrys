@@ -12,12 +12,8 @@ impl Fill {
 
 impl Filter for Fill {
     fn filter(&self, image: &mut Image) {
-        let start = image
-            .pixels
-            .keys()
-            .copied()
-            .fold(Position::MAX, Position::min);
-        let size = image.pixels.keys().copied().collect::<Size>();
+        let start = image.positions().fold(Position::MAX, Position::min);
+        let size = image.positions().collect::<Size>();
         let mut stack = size.edge_positions().map(|p| p + start).collect::<Vec<_>>();
         let mut outer_positions = BTreeSet::new();
         while let Some(position) = stack.pop() {
