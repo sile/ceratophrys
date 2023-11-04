@@ -1,6 +1,6 @@
 [package]
 name = "ceratophrys"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Takeru Ohta <phjgt308@gmail.com>"]
 description = "Library to draw pixel art as code"
 homepage = "https://github.com/sile/ceratophrys"
