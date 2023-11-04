@@ -67,6 +67,26 @@ impl Image {
         self
     }
 
+    pub fn get_size(&self) -> Size {
+        self.positions().collect()
+    }
+
+    pub fn get_top(&self) -> i16 {
+        self.positions().map(|p| p.y).min().unwrap_or(0)
+    }
+
+    pub fn get_bottom(&self) -> i16 {
+        self.positions().map(|p| p.y).max().unwrap_or(0)
+    }
+
+    pub fn get_left(&self) -> i16 {
+        self.positions().map(|p| p.x).min().unwrap_or(0)
+    }
+
+    pub fn get_right(&self) -> i16 {
+        self.positions().map(|p| p.x).max().unwrap_or(0)
+    }
+
     pub fn get_color(&self, position: Position) -> Color {
         let mut color = self
             .pixels
