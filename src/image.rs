@@ -1,4 +1,4 @@
-use crate::{filters::Filter, Color, Pixel, Position, Size};
+use crate::{filters::Filter, Color, Pixel, Position, Region, Size};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
@@ -67,6 +67,23 @@ impl Image {
         self
     }
 
+    pub fn get_region(&self) -> Region {
+        let mut min = Position::MAX;
+        let mut max = Position::MIN;
+        for position in self.positions() {
+            min = min.min(position);
+            max = max.max(position);
+        }
+        if max < min {
+            Region::new(Position::ORIGIN, Size::EMPTY)
+        } else {
+            let size = max - min;
+            let size = Size::new(size.x as u16 + 1, size.y as u16 + 1);
+            Region::new(min, size)
+        }
+    }
+
+    // TODO: remove
     pub fn get_size(&self) -> Size {
         self.positions().collect()
     }
