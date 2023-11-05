@@ -11,6 +11,10 @@ impl Region {
         Self { start, size }
     }
 
+    pub fn is_empty(self) -> bool {
+        self.size.is_empty()
+    }
+
     pub const fn top(self) -> i16 {
         self.start.y
     }
@@ -25,6 +29,12 @@ impl Region {
 
     pub const fn right(self) -> i16 {
         self.start.x + self.size.width as i16 - 1
+    }
+
+    pub fn positions(self) -> impl Iterator<Item = Position> {
+        self.size
+            .positions()
+            .map(move |position| position + self.start)
     }
 }
 
