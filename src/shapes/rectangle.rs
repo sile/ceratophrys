@@ -1,4 +1,4 @@
-use crate::{Color, Pixel, Position, Size};
+use crate::{Color, Image, Pixel, Position, Size};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Rectangle {
@@ -32,6 +32,10 @@ impl Rectangle {
 
     pub const fn fill(self) -> Self {
         Self { fill: true, ..self }
+    }
+
+    pub fn to_image(self) -> Image {
+        self.into_iter().collect()
     }
 }
 

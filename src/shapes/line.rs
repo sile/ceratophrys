@@ -1,4 +1,4 @@
-use crate::{Color, Pixel, Position};
+use crate::{Color, Image, Pixel, Position};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Line {
@@ -26,6 +26,10 @@ impl Line {
 
     pub const fn vector(self, vector: Position) -> Self {
         Self { vector, ..self }
+    }
+
+    pub fn to_image(self) -> Image {
+        self.into_iter().collect()
     }
 }
 

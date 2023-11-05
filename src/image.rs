@@ -104,6 +104,11 @@ impl Image {
         self
     }
 
+    pub fn children(mut self, children: impl IntoIterator<Item = Self>) -> Self {
+        self.children.extend(children);
+        self
+    }
+
     pub fn to_size_and_colors(&self) -> (Size, Vec<Color>) {
         let size = Size::from_iter(self.iter().map(|p| p.position));
 
