@@ -24,6 +24,18 @@ pub const fn xy(x: i16, y: i16) -> Position {
     Position::xy(x, y)
 }
 
+pub const fn yx(y: i16, x: i16) -> Position {
+    Position::xy(x, y)
+}
+
+pub const fn x(x: i16) -> Position {
+    xy(x, 0)
+}
+
+pub const fn y(y: i16) -> Position {
+    xy(0, y)
+}
+
 pub const fn square(side: u16) -> Size {
     Size::square(side)
 }

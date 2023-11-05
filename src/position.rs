@@ -22,6 +22,7 @@ impl Position {
         Self { x, y }
     }
 
+    // TODO: remove
     pub const fn move_x(self, x: i16) -> Self {
         Self::xy(self.x.saturating_add(x), self.y)
     }
