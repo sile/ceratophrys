@@ -31,6 +31,22 @@ impl Region {
         self.start.x + self.size.width as i16 - 1
     }
 
+    pub const fn top_left(self) -> Position {
+        self.start
+    }
+
+    pub const fn top_right(self) -> Position {
+        Position::xy(self.right(), self.top())
+    }
+
+    pub const fn bottom_left(self) -> Position {
+        Position::xy(self.left(), self.bottom())
+    }
+
+    pub const fn bottom_right(self) -> Position {
+        Position::xy(self.right(), self.bottom())
+    }
+
     pub fn positions(self) -> impl Iterator<Item = Position> {
         self.size
             .positions()
