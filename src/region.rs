@@ -1,6 +1,6 @@
 use crate::{Position, Size};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Region {
     pub start: Position,
     pub size: Size,
@@ -9,5 +9,39 @@ pub struct Region {
 impl Region {
     pub const fn new(start: Position, size: Size) -> Self {
         Self { start, size }
+    }
+
+    pub const fn top(self) -> i16 {
+        self.start.y
+    }
+
+    pub const fn bottom(self) -> i16 {
+        self.start.y + self.size.height as i16 - 1
+    }
+
+    pub const fn left(self) -> i16 {
+        self.start.x
+    }
+
+    pub const fn right(self) -> i16 {
+        self.start.x + self.size.width as i16 - 1
+    }
+}
+
+impl FromIterator<Position> for Region {
+    fn from_iter<T: IntoIterator<Item = Position>>(iter: T) -> Self {
+        let mut min = Position::MAX;
+        let mut max = Position::MIN;
+        for position in iter {
+            min = min.min(position);
+            max = max.max(position);
+        }
+        if max < min {
+            Self::new(Position::ORIGIN, Size::EMPTY)
+        } else {
+            let size = max - min;
+            let size = Size::new(size.x as u16 + 1, size.y as u16 + 1);
+            Self::new(min, size)
+        }
     }
 }

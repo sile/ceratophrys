@@ -68,40 +68,11 @@ impl Image {
     }
 
     pub fn get_region(&self) -> Region {
-        let mut min = Position::MAX;
-        let mut max = Position::MIN;
-        for position in self.positions() {
-            min = min.min(position);
-            max = max.max(position);
-        }
-        if max < min {
-            Region::new(Position::ORIGIN, Size::EMPTY)
-        } else {
-            let size = max - min;
-            let size = Size::new(size.x as u16 + 1, size.y as u16 + 1);
-            Region::new(min, size)
-        }
-    }
-
-    // TODO: remove
-    pub fn get_size(&self) -> Size {
         self.positions().collect()
     }
 
-    pub fn get_top(&self) -> i16 {
-        self.positions().map(|p| p.y).min().unwrap_or(0)
-    }
-
-    pub fn get_bottom(&self) -> i16 {
-        self.positions().map(|p| p.y).max().unwrap_or(0)
-    }
-
-    pub fn get_left(&self) -> i16 {
-        self.positions().map(|p| p.x).min().unwrap_or(0)
-    }
-
-    pub fn get_right(&self) -> i16 {
-        self.positions().map(|p| p.x).max().unwrap_or(0)
+    pub fn get_size(&self) -> Size {
+        self.positions().collect()
     }
 
     pub fn get_color(&self, position: Position) -> Color {
