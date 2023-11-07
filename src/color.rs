@@ -32,6 +32,10 @@ impl Color {
         )
     }
 
+    pub const fn alpha(self, a: u8) -> Self {
+        Self::rgba(self.r, self.g, self.b, a)
+    }
+
     pub const fn to_rgba(self) -> (u8, u8, u8, u8) {
         (self.r, self.g, self.b, self.a)
     }
