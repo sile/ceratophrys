@@ -36,6 +36,10 @@ pub const fn y(y: i16) -> Position {
     xy(0, y)
 }
 
+pub const fn wh(width: u16, height: u16) -> Size {
+    Size::new(width, height)
+}
+
 pub const fn square(side: u16) -> Size {
     Size::square(side)
 }
