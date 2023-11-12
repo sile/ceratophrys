@@ -249,6 +249,14 @@ impl Color {
         (hsv.h, hsv.s, hsv.v) = f(hsv.h, hsv.s, hsv.v);
         hsv.to_color()
     }
+
+    pub fn map_rgb<F>(mut self, f: F) -> Self
+    where
+        F: FnOnce(u8, u8, u8) -> (u8, u8, u8),
+    {
+        (self.r, self.g, self.b) = f(self.r, self.g, self.b);
+        self
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
