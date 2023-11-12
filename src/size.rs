@@ -9,7 +9,12 @@ pub struct Size {
 impl Size {
     pub const EMPTY: Self = Self::new(0, 0);
 
+    // TODO: delete
     pub const fn new(width: u16, height: u16) -> Self {
+        Self { width, height }
+    }
+
+    pub const fn wh(width: u16, height: u16) -> Self {
         Self { width, height }
     }
 
@@ -23,6 +28,14 @@ impl Size {
 
     pub fn area(self) -> u32 {
         u32::from(self.width) * u32::from(self.height)
+    }
+
+    pub fn map_wh<F>(self, f: F) -> Self
+    where
+        F: Fn(u16, u16) -> (u16, u16),
+    {
+        let (w, h) = f(self.width, self.height);
+        Self::new(w, h)
     }
 
     pub fn contains(self, position: Position) -> bool {
